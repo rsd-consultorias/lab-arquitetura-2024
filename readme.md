@@ -2,14 +2,14 @@
 
 ### Visão Geral da Solução
 
-![Visão Geral](c4-model.jpg)
+![Visão Geral](docs/c4-model.jpg)
 
 
 ### Arquitetura de Software
 
-![Modelo](arquitetura-software.jpg)
+![Modelo](docs/arquitetura-software.jpg)
 
-![Diagrama de Interação](diagrama-interacao.jpg)
+![Diagrama de Interação](docs/diagrama-interacao.jpg)
 
 ## Auxílio na Estimativa
 
