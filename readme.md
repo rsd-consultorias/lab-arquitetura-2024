@@ -1,10 +1,15 @@
 # Lab Arquitetura 2024
 
-### Modelo
+### Visão Geral da Solução
+
+![Visão Geral](c4-model.jpg)
+
+
+### Arquitetura de Software
+
 ![Modelo](arquitetura-software.jpg)
 
-
-
+![Diagrama de Interação](diagrama-interacao.jpg)
 
 ## Auxílio na Estimativa
 
