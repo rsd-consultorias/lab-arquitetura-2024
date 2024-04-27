@@ -88,3 +88,5 @@ Cada ciclo de desenvolvimento deverá ser planejado e acordado com todos as data
 [1] Gráfico de burndown: https://kickoff.pmi.org/app/getting-the-work-done/measure-project-success/3
 
 [2] Matriz de riscos: https://kickoff.pmi.org/app/planning-your-project-work/know-your-risks-and-create-mitigation-plans/3
+
+[3] Ferramentas e templates para gestão: https://kickoff.pmi.org/app/tools-and-templates
