@@ -1,4 +1,4 @@
-# Lab Desenvolvimento de Software 2024
+# Lab Desenvolvimento de API - 2024
 
 ## Planejamento do Projeto
 
