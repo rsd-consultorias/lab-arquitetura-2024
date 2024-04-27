@@ -1,4 +1,4 @@
-# Lab Arquitetura 2024
+# Lab Desenvolvimento de Software 2024
 
 ## Planejamento do Projeto
 
