@@ -15,8 +15,6 @@
 
 ### Planejamento do desenvolvedor
 
-### Controle da gestão/liderança
-
 - Premissas
     - Deverá já ter definida a arquitetura do software no início do projeto
     - Deverá ter a definição de pronto para qualidade de código ANTES de iniciar o desenvolvimento
@@ -34,6 +32,28 @@
         - Projeto rodando com a(s) controller(s) anotada(s) para gerar o Swagger
         - Repositories definidas e script para criação/alteração do banco de dados
         - Finalização da história e realização de teste integrado para liberar como concluída
+    
+    - Os milestones ajudarão planejar início de atividades dependentes dessa história junto ao time ou times externo
+    - O planejamento deverá ser entregue ao gerente do projeto ou scrum master para que esse possa acompanhar e integrar ao planejamento do projeto todo
+    - Se a ferramenta de board/kanban não tiver essa funcionalidade, não houver acesso ao MS Project e não quiser fazer planilha, há alternativa online: https://www.onlinegantt.com
+    - Para que seja possível o acompanhamento, deve-se diariamente reportar um percentual de progresso. Utilize a daily para reportar ou atualize o card na ferramenta de board/kanban (Jira, Trello, etc)
+
+![Planejamento do dev](docs/planejamento-dev.jpg)
+
+### Controle da gestão/liderança
+
+### 1 - Acompanhamento do progresso
+
+- Um gráfico de burndown pode ser gerado à partir do progresso reportado pelo time
+    - Se a ferramenta utilizada para controlar o board/kanban não disponibilizar essa funcionalidade, pode ser usar templates como o disponibilizado pelo PMI [1]
+
+### 2 - Acompanhamento dos riscos
+
+- No início de cada ciclo de desenvolvimento deve-se tentar mapear riscos e acompanha-los para que não afetem o atingimento da meta do ciclo
+    - Se a ferramenta utilizada para controlar o board/kanban não disponibilizar essa funcionalidade, pode ser usar templates como o disponibilizado pelo PMI [2]
+
+![Gestão de riscos](docs/gestao-riscos.jpg)
+
 
 ## Auxílio na Estimativa
 
@@ -51,3 +71,8 @@
 
 ### Implementação da infra
 > Atividades necessárias para atender o desenvolvimento dos serviços externos à aplicação que são exigidos para atender os casos de uso da service.
+
+## Referências
+[1] Gráfico de burndown: https://kickoff.pmi.org/app/getting-the-work-done/measure-project-success/3
+
+[2] Matriz de riscos: https://kickoff.pmi.org/app/planning-your-project-work/know-your-risks-and-create-mitigation-plans/3
