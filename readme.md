@@ -1,17 +1,27 @@
 # Lab Arquitetura 2024
 
+## Planejamento do Projeto
+
 ### Visão Geral da Solução
+
+Antes de iniciar o desenvolvimento deve-se elaborar e garantir que todos tenham conhecimento da visão geral da solução, seus módulos, interfaces e integrações.
 
 ![Visão Geral](docs/c4-model.jpg)
 
 
 ### Arquitetura de Software
 
+Deverá já ter definido o desenho conceitual que será adotado para o desenvolvimento. O entendimento do modelo deve estar claro para todo o time.
+
 ![Modelo](docs/arquitetura-software.jpg)
+
+Caso houver necessidade de mais detalhes para entender o modelo, deverá ser disponibilizado diagramas auxiliares para enriquecer o entendimento.
 
 ![Diagrama de Interação](docs/diagrama-interacao.jpg)
 
 ## Planejamento e Controle do Ciclo de Desenvolvimento
+
+Cada ciclo de desenvolvimento deverá ser planejado e acordado com todos as datas de término e devem ser definido milestones para que incrementos funcionais sejam entregues afim de dar subsídio para que tarefas dependentes possam ser programadas com antecedência.
 
 ### Planejamento do desenvolvedor
 
