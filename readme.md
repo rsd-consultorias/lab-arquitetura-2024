@@ -57,6 +57,8 @@ Cada ciclo de desenvolvimento deverá ser planejado e acordado com todos as data
 - Um gráfico de burndown pode ser gerado à partir do progresso reportado pelo time
     - Se a ferramenta utilizada para controlar o board/kanban não disponibilizar essa funcionalidade, pode ser usar templates como o disponibilizado pelo PMI [1]
 
+![Gráfico de burndown](docs/burndown-chart.png)
+
 ### 2 - Acompanhamento dos riscos
 
 - No início de cada ciclo de desenvolvimento deve-se tentar mapear riscos e acompanha-los para que não afetem o atingimento da meta do ciclo
