@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { CheckoutSummary, ECheckoutState } from "../../core/models/checkout-summary";
+import { CheckoutSummary, CheckoutState } from "../../core/models/checkout-summary";
 import { ShoppingCart } from "../../core/models/shopping-cart";
 import { Address } from "src/core/models/address";
 import { PaymentInfo } from "../../core/models/payment-info";
@@ -11,7 +11,7 @@ export class CheckoutRepository {
 
     public async createCheckout(shoppingCart: ShoppingCart): Promise<CheckoutSummary> {
         let checkoutSummary = new CheckoutSummary(randomUUID(), shoppingCart);
-        checkoutSummary.checkoutState = ECheckoutState.CREATED;
+        checkoutSummary.checkoutState = CheckoutState.CREATED;
 
         return checkoutSummary;
     }
@@ -22,7 +22,7 @@ export class CheckoutRepository {
             { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
         ]);
         let checkoutSummary = new CheckoutSummary(transactionId, shoppingCart);
-        checkoutSummary.checkoutState = ECheckoutState.CREATED;
+        checkoutSummary.checkoutState = CheckoutState.CREATED;
 
         return checkoutSummary;
     }
@@ -34,7 +34,7 @@ export class CheckoutRepository {
         ]);
         let checkoutSummary = new CheckoutSummary(transactionId, shoppingCart);
         checkoutSummary.shippingAddress = address;
-        checkoutSummary.checkoutState = ECheckoutState.SHIPPING_ADDRESS_UPDATED;
+        checkoutSummary.checkoutState = CheckoutState.SHIPPING_ADDRESS_UPDATED;
 
         return checkoutSummary;
     }
@@ -46,7 +46,7 @@ export class CheckoutRepository {
         ]);
         let checkoutSummary = new CheckoutSummary(transactionId, shoppingCart);
         checkoutSummary.billingAddress = address;
-        checkoutSummary.checkoutState = ECheckoutState.BILLING_ADDRESS_UPDATED;
+        checkoutSummary.checkoutState = CheckoutState.BILLING_ADDRESS_UPDATED;
 
         return checkoutSummary;
     }
@@ -58,7 +58,7 @@ export class CheckoutRepository {
         ]);
         let checkoutSummary = new CheckoutSummary(transactionId, shoppingCart);
         checkoutSummary.paymentInfo = paymentInfo;
-        checkoutSummary.checkoutState = ECheckoutState.PAYMENT_INFO_UPDATED;
+        checkoutSummary.checkoutState = CheckoutState.PAYMENT_INFO_UPDATED;
 
         return checkoutSummary;
     }
@@ -69,7 +69,7 @@ export class CheckoutRepository {
             { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
         ]);
         let checkoutSummary = new CheckoutSummary(transactionId, shoppingCart);
-        checkoutSummary.checkoutState = ECheckoutState.FINALIZED_ACCEPTED;
+        checkoutSummary.checkoutState = CheckoutState.ACCEPTED;
 
         return checkoutSummary;
     }
