@@ -1,7 +1,7 @@
 import { CheckoutController } from "./controllers/checkout.controller";
 import { HttpServer } from "./infra/http-server";
-import { AccountQueue } from "./infra/message-broker/account.queue";
-import { SubscriptionQueue } from "./infra/message-broker/subscription.queue";
+import { AccountQueueService } from "./infra/message-broker/account.queue";
+import { SubscriptionQueueService } from "./infra/message-broker/subscription.queue";
 import { CheckoutRepository } from "./infra/repositories/checkout-repository";
 
 export function initServer(port: number) {
@@ -10,8 +10,8 @@ export function initServer(port: number) {
     
     new CheckoutController(
         checkoutRepository, 
-        new AccountQueue(),
-        new SubscriptionQueue(),
+        new AccountQueueService(),
+        new SubscriptionQueueService(),
         httpServer);
 
     httpServer.listen(port);

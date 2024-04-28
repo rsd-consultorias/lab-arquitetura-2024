@@ -6,8 +6,8 @@ import { ShoppingCart } from "../core/models/shopping-cart";
 import { IHttpServer } from "../infra/http-server";
 import { APIResponse } from "../view-models/api-response";
 import { CheckoutRepository } from "../infra/repositories/checkout-repository";
-import { AccountQueue } from "src/infra/message-broker/account.queue";
-import { SubscriptionQueue } from "src/infra/message-broker/subscription.queue";
+import { AccountQueueService } from "../infra/message-broker/account.queue";
+import { SubscriptionQueueService } from "../infra/message-broker/subscription.queue";
 
 const CHECKOUT_URL_API = '/v1/checkout';
 
@@ -15,8 +15,8 @@ export class CheckoutController {
 
     constructor(
         private checkoutRepository: CheckoutRepository, 
-        private accountQueue: AccountQueue,
-        private subscriptionQueue: SubscriptionQueue,
+        private accountQueue: AccountQueueService,
+        private subscriptionQueue: SubscriptionQueueService,
         private httpServer: IHttpServer) {
         // INFO: creates checkout transaction
         httpServer.register(`${CHECKOUT_URL_API}/create`, 'post',

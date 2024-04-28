@@ -1,6 +1,6 @@
 import { BuyerInfo } from "../../core/models/buyer-info";
 
-export class AccountQueue {
+export class AccountQueueService {
     public async sendbuyerInfoToAccountVerification(buyerInfo: BuyerInfo): Promise<any> {
 
     }
