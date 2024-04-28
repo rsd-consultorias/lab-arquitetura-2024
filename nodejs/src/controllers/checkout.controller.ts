@@ -1,10 +1,10 @@
 import { ParamsDictionary } from "express-serve-static-core";
-import { Address } from "../core/models/address.model";
-import { CheckoutSummary } from "../core/models/checkout-summary.model";
-import { PaymentOption } from "../core/models/payment-option.model";
-import { ShoppingCart } from "../core/models/shopping-cart.model";
+import { Address } from "../core/models/address";
+import { CheckoutSummary } from "../core/models/checkout-summary";
+import { PaymentOption } from "../core/models/payment-option";
+import { ShoppingCart } from "../core/models/shopping-cart";
 import { IHttpServer } from "../infra/http-server.interface";
-import { APIResponse } from "../view-models/api-response.view-model";
+import { APIResponse } from "../view-models/api-response";
 import { randomUUID } from "crypto";
 
 export class CheckoutController {
@@ -29,20 +29,44 @@ export class CheckoutController {
 
     private async addPayment(params: ParamsDictionary, body: PaymentOption): Promise<APIResponse<CheckoutSummary>> {
         let transactionId = params['transactionId'];
+        let shoppingCart = new ShoppingCart(transactionId, [
+            { sku: 'XPTO1234', price: 799.34, quantity: 1 },
+            { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
+        ]);
+        let summary = new CheckoutSummary(transactionId, "John Doe", new Date('1984-08-01'), '123456', shoppingCart);
+        summary.paymentOption = body;
 
-        return new APIResponse(false, `NOT IMPLEMENTED`);
+        let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, summary);
+
+        return apiResponse;
     }
 
     private async addShippingAddress(params: ParamsDictionary, body: Address): Promise<APIResponse<CheckoutSummary>> {
         let transactionId = params['transactionId'];
+        let shoppingCart = new ShoppingCart(transactionId, [
+            { sku: 'XPTO1234', price: 799.34, quantity: 1 },
+            { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
+        ]);
+        let summary = new CheckoutSummary(transactionId, "John Doe", new Date('1984-08-01'), '123456', shoppingCart);
+        summary.shippingAddress = body;
 
-        return new APIResponse(false, `NOT IMPLEMENTED`);
+        let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, summary);
+
+        return apiResponse;
     }
 
     private async addBillingAddress(params: ParamsDictionary, body: Address): Promise<APIResponse<CheckoutSummary>> {
         let transactionId = params['transactionId'];
+        let shoppingCart = new ShoppingCart(transactionId, [
+            { sku: 'XPTO1234', price: 799.34, quantity: 1 },
+            { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
+        ]);
+        let summary = new CheckoutSummary(transactionId, "John Doe", new Date('1984-08-01'), '123456', shoppingCart);
+        summary.billingAddress = body;
 
-        return new APIResponse(false, `NOT IMPLEMENTED`);
+        let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, summary);
+
+        return apiResponse;
     }
 
     private async getDetails(params: ParamsDictionary): Promise<APIResponse<CheckoutSummary>> {

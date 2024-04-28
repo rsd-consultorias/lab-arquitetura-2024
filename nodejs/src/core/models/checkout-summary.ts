@@ -1,6 +1,6 @@
-import { Address } from "./address.model";
-import { PaymentOption } from "./payment-option.model";
-import { ShoppingCart } from "./shopping-cart.model";
+import { Address } from "./address";
+import { PaymentOption } from "./payment-option";
+import { ShoppingCart } from "./shopping-cart";
 
 export class CheckoutSummary {
     public total?: number;

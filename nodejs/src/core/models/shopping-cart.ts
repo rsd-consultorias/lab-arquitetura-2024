@@ -1,4 +1,4 @@
-import { CartItem } from "./cart-item.value-object";
+import { CartItem } from "./cart-item";
 
 export class ShoppingCart {
     constructor(
