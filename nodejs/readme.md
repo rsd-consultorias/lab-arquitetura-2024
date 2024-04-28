@@ -17,3 +17,5 @@
 [PayPal Developer](https://developer.paypal.com/home)
 
 [PayPal Plus - Brazil](https://developer.paypal.com/docs/regional/br/)
+
+[Blog PayPal Tech](https://medium.com/paypal-tech)

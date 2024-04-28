@@ -79,6 +79,8 @@ export class CheckoutController {
                 let transactionId = params['transactionId'];
                 let checkoutSummary = await this.checkoutRepository.findByTransactionId(transactionId);
 
+                // call payment service
+
                 // sends data to start the signatures
                 let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
                 checkoutSummary = await this.checkoutRepository.finalize(transactionId);
