@@ -14,8 +14,8 @@ export class CheckoutSummary {
         public shippingAddress?: Address,
         public billingAddress?: Address,
         public paymentOption?: PaymentOption
-    ) { 
-        if(shoppingCart.items) {
+    ) {
+        if (shoppingCart.items) {
             this.total = shoppingCart.items.map((item) => item.price * item.quantity).reduce((x, y) => x + y);
         }
     }
