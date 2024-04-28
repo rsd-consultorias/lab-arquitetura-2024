@@ -6,9 +6,9 @@ import { ShoppingCart } from "./shopping-cart";
 export enum CheckoutState {
     /** */
     CREATED = 'CREATED',
-    /** State checking account is dealayed */
+    /** Checking account is dealayed */
     CHECKING_ACCOUNT = 'CHECKING_ACCOUNT',
-    /** State verifying account is delayed */
+    /** Account is created */
     ACCOUNT_CREATED = 'ACCOUNT_CREATED',
     /** Shipping address info updated */
     SHIPPING_ADDRESS_UPDATED = 'SHIPPING_ADDRESS_UPDATED',
