@@ -24,7 +24,7 @@ export class CheckoutController {
                 let apiResponse = new APIResponse<CheckoutSummary>(true, undefined);
 
                 // Creates account if not exists, otherwise returns existing account
-                let accountResponse = await this.accountQueue.sendbuyerInfoToAccount(body.buyerInfo);
+                let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(body.buyerInfo);
 
                 return apiResponse;
             });
@@ -80,9 +80,11 @@ export class CheckoutController {
                 let checkoutSummary = await this.checkoutRepository.findByTransactionId(transactionId);
 
                 // sends data to start the signatures
-                let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToSubscription(checkoutSummary.shoppingCart);
+                let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
+                checkoutSummary = await this.checkoutRepository.finalize(transactionId);
 
                 let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
+
 
                 return apiResponse;
             }
