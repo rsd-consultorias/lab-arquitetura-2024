@@ -1,5 +1,25 @@
+import { Configuration } from "../../configuration";
+
 export module PayPal {
     export class PayPalService {
+
+        constructor() { }
+
+        private async getAccessToken(): Promise<string> {
+            let authKeys = Buffer.from(`${Configuration.PAYPAL_CLIENT_ID}:${Configuration.PAYPAL_CLIENT_SECRET}`).toString('base64');
+            let request = await fetch(`${Configuration.PAYPAL_URL}/v1/oauth2/token`, {
+                method: 'POST',
+                body: 'grant_type=client_credentials',
+                headers: {
+                    Authorization: `Basic ${authKeys}`
+                }
+            });
+
+            let response = await request.json();
+
+            return response.access_token;;
+        }
+
         /**
          * 
          * @param paymentRequest 
@@ -7,6 +27,8 @@ export module PayPal {
          * @document https://developer.paypal.com/docs/regional/br/create-payment-request/
          */
         public async createPaymentRequest(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
+            console.log(JSON.stringify(await this.getAccessToken()));
+
             return {} as dto.PayPalDTO;
         }
 

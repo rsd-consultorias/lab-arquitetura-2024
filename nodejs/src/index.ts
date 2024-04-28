@@ -1,3 +1,4 @@
+import { Configuration } from "./configuration";
 import { CheckoutController } from "./controllers/checkout.controller";
 import { HttpServer } from "./infra/http-server";
 import { AccountQueueService } from "./infra/message-broker/account.queue";
@@ -17,4 +18,4 @@ export function initServer(port: number) {
     httpServer.listen(port);
 }
 
-initServer(8080);
+initServer(parseInt(Configuration.SERVER_PORT));

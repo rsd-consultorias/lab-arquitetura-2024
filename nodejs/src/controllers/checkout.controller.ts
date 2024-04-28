@@ -8,6 +8,7 @@ import { APIResponse } from "../view-models/api-response";
 import { CheckoutRepository } from "../infra/repositories/checkout-repository";
 import { AccountQueueService } from "../infra/message-broker/account.queue";
 import { SubscriptionQueueService } from "../infra/message-broker/subscription.queue";
+import { PayPal } from "../infra/services/paypal.service";
 
 const CHECKOUT_URL_API = '/v1/checkout';
 
@@ -69,6 +70,9 @@ export class CheckoutController {
             let checkoutSummary = await this.checkoutRepository.findByTransactionId(transactionId);
 
             let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
+
+            let a = new PayPal.PayPalService();
+            await a.createPaymentRequest({} as PayPal.dto.PayPalDTO);
 
             return apiResponse;
         });
