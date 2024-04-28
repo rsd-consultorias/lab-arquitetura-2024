@@ -33,6 +33,7 @@ export enum CheckoutState {
 export class CheckoutSummary {
     public buyerInfo?: BuyerInfo;
     public total?: number;
+    public currency?: string;
     public checkoutState?: CheckoutState;
 
     constructor(

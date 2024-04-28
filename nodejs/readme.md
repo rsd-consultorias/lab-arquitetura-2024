@@ -15,3 +15,5 @@
 [Integração com PayPal com NodeJS (continuação)](https://www.youtube.com/watch?v=GJXyps4FtHU)
 
 [PayPal Developer](https://developer.paypal.com/home)
+
+[PayPal Plus - Brazil](https://developer.paypal.com/docs/regional/br/)
