@@ -3,7 +3,7 @@ import { Address } from "../core/models/address";
 import { CheckoutSummary } from "../core/models/checkout-summary";
 import { PaymentOption } from "../core/models/payment-option";
 import { ShoppingCart } from "../core/models/shopping-cart";
-import { IHttpServer } from "../infra/http-server.interface";
+import { IHttpServer } from "../infra/http-server";
 import { APIResponse } from "../view-models/api-response";
 import { randomUUID } from "crypto";
 
