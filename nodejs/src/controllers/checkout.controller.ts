@@ -31,9 +31,7 @@ export class CheckoutController {
                 let paymentService = new PayPal.PayPalService();
             
                 let paymentResponse: CheckoutSummary = await paymentService.createPaymentRequest(checkoutSummary);
-                apiResponse.body!.paymentInfo = {
-                    transactionResponseBody: paymentResponse
-                };
+                apiResponse.body = paymentResponse;
 
                 return apiResponse;
             });
