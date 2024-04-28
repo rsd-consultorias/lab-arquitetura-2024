@@ -1,7 +1,8 @@
+import { IPaymentService } from "src/core/services/payment-service.interface";
 import { Configuration } from "../../configuration";
 
 export module PayPal {
-    export class PayPalService {
+    export class PayPalService implements IPaymentService {
 
         constructor() { }
 
