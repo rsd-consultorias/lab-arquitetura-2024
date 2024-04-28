@@ -18,6 +18,7 @@ export class CheckoutController {
         private checkoutRepository: CheckoutRepository,
         private accountQueue: AccountQueueService,
         private subscriptionQueue: SubscriptionQueueService,
+        private paymentService = new PayPal.PayPalService,
         private httpServer: IHttpServer) {
         // INFO: creates checkout transaction
         httpServer.register(`${CHECKOUT_URL_API}/create`, 'post',
@@ -27,8 +28,6 @@ export class CheckoutController {
 
                 // Creates account if not exists, otherwise returns existing account
                 let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(checkoutSummary.shoppingCart.buyerInfo);
-
-                let paymentService = new PayPal.PayPalService();
             
                 let paymentResponse: CheckoutSummary = await paymentService.createPaymentRequest(checkoutSummary);
                 apiResponse.body = paymentResponse;
