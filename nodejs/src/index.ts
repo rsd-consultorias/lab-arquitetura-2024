@@ -1,10 +1,12 @@
-import { CheckoutController } from "./controllers/checkout";
-import { HttpServer, IHttpServer } from "./infra/http-server";
+import { CheckoutController } from "./controllers/checkout.controller";
+import { HttpServer } from "./infra/http-server";
+import { CheckoutRepository } from "./infra/repositories/checkout-repository";
 
 export function initServer(port: number) {
     const httpServer = new HttpServer();
+    const checkoutRepository = new CheckoutRepository();
     
-    new CheckoutController(httpServer);
+    new CheckoutController(checkoutRepository, httpServer);
 
     httpServer.listen(port);
 }
