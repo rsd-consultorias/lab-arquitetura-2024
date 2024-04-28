@@ -24,19 +24,32 @@ export module PayPal {
          * 
          * @param paymentRequest 
          * @returns 
-         * @document https://developer.paypal.com/docs/regional/br/create-payment-request/
+         * @see https://developer.paypal.com/docs/regional/br/create-payment-request/
          */
         public async createPaymentRequest(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
-            console.log(JSON.stringify(await this.getAccessToken()));
+            let endpointUrl = `/payments/payment`;
+            let accessToken = await this.getAccessToken();
 
-            return {} as dto.PayPalDTO;
+            let request = await fetch(`${Configuration.PAYPAL_URL}${endpointUrl}`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(paymentRequest),
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }
+            );
+
+            let response: dto.PayPalDTO = await request.json();
+
+            return response;
         }
 
         /**
          * 
          * @param paymentRequest 
          * @returns 
-         * @document https://developer.paypal.com/docs/regional/br/update-selection-page/
+         * @see https://developer.paypal.com/docs/regional/br/update-selection-page/
          */
         public async updatePaymentRequest(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
             return {} as dto.PayPalDTO;
@@ -46,7 +59,7 @@ export module PayPal {
          * 
          * @param paymentRequest 
          * @returns 
-         * @document https://developer.paypal.com/docs/regional/br/order-review-page/
+         * @see https://developer.paypal.com/docs/regional/br/order-review-page/
          */
         public async reviewOrder(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
             return {} as dto.PayPalDTO;
@@ -56,7 +69,7 @@ export module PayPal {
          * 
          * @param paymentRequest 
          * @returns 
-         * @document https://developer.paypal.com/docs/regional/br/test-and-execute/
+         * @see https://developer.paypal.com/docs/regional/br/test-and-execute/
          */
         public async executeOrder(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
             return {} as dto.PayPalDTO;
