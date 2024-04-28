@@ -1,7 +1,7 @@
 import { ParamsDictionary } from "express-serve-static-core";
 import { Address } from "../core/models/address";
 import { CheckoutSummary } from "../core/models/checkout-summary";
-import { PaymentOption } from "../core/models/payment-option";
+import { PaymentInfo } from "../core/models/payment-info";
 import { ShoppingCart } from "../core/models/shopping-cart";
 import { IHttpServer } from "../infra/http-server";
 import { APIResponse } from "../view-models/api-response";
@@ -44,10 +44,10 @@ export class CheckoutController {
 
         // INFO: updates payment method 
         httpServer.register(`${CHECKOUT_URL_API}/:transactionId/payment-option`, 'put',
-            async (params: ParamsDictionary, body: PaymentOption): Promise<APIResponse<CheckoutSummary>> => {
+            async (params: ParamsDictionary, body: PaymentInfo): Promise<APIResponse<CheckoutSummary>> => {
                 let transactionId = params['transactionId'];
-                let checkoutSummary = await this.checkoutRepository.updatePaymentOption(transactionId, body);
-                checkoutSummary.paymentOption = body;
+                let checkoutSummary = await this.checkoutRepository.updatePaymentInfo(transactionId, body);
+                checkoutSummary.paymentInfo = body;
 
                 let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
 
