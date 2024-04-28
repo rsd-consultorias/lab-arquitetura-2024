@@ -2,38 +2,48 @@ import { IPaymentService } from "../../core/services/payment-service.interface";
 import { Configuration } from "../../configuration";
 import { ShoppingCart } from "../../core/models/shopping-cart";
 import { CheckoutSummary } from "../../core/models/checkout-summary";
-import { it } from "node:test";
 
 export module PayPal {
     export class PayPalService implements IPaymentService {
 
         constructor() { }
 
-        async createPaymentRequest(shoppingCart: ShoppingCart): Promise<CheckoutSummary> {
+        async createPaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
             let newpaymentRequest: dto.PayPalDTO = {};
 
             newpaymentRequest.intent = 'sale';
             newpaymentRequest.payer = { payment_method: 'paypal' };
             newpaymentRequest.transactions = [{
-                // description: item.description!,
+                description: 'Compra loja de teste',
+                payment_options: { allowed_payment_method: 'IMMEDIATE_PAY' },
                 amount: {
-                    // total: ((item.price * item.quantity) + item.tax! + item.handlingFee! + item.insurance! + item.shipping! - item.shippingDiscount! - item.discount!).toFixed(2),
+                    total: checkoutSummary.shoppingCart.items.map((i) => (i.price * i.quantity) + i.tax! + i.handlingFee! + i.insurance! + i.shipping! - i.shippingDiscount! - i.discount!).reduce((x, y) => x + y).toFixed(2),
                     currency: 'BRL',
                     details: {
-                        // shipping: item.shipping?.toFixed(2),
-                        // subtotal: item.price.toFixed(2),
-                        // shipping_discount: item.shippingDiscount?.toFixed(2),
-                        // insurance: item.insurance?.toFixed(2),
-                        // handling_fee: item.handlingFee?.toFixed(2),
-                        // tax: item.tax?.toFixed(2)
+                        shipping: checkoutSummary.shoppingCart.items.map((i) => i.shipping!).reduce((x, y) => x + y).toFixed(2),
+                        subtotal: checkoutSummary.shoppingCart.items.map((i) => i.price! * i.quantity!).reduce((x, y) => x + y).toFixed(2),
+                        shipping_discount: checkoutSummary.shoppingCart.items.map((i) => i.shippingDiscount!).reduce((x, y) => x + y).toFixed(2),
+                        insurance: checkoutSummary.shoppingCart.items.map((i) => i.insurance!).reduce((x, y) => x + y).toFixed(2),
+                        handling_fee: checkoutSummary.shoppingCart.items.map((i) => i.handlingFee!).reduce((x, y) => x + y).toFixed(2),
+                        tax: checkoutSummary.shoppingCart.items.map((i) => i.tax!).reduce((x, y) => x + y).toFixed(2)
                     }
                 },
                 item_list: {
+                    shipping_address: {
+                        recipient_name: '',
+                        line1: checkoutSummary.shippingAddress?.street,
+                        line2: checkoutSummary.shippingAddress?.district,
+                        city: checkoutSummary.shippingAddress?.city,
+                        country_code: checkoutSummary.shippingAddress?.countryCode,
+                        postal_code: checkoutSummary.shippingAddress?.postalCode,
+                        state: checkoutSummary.shippingAddress?.state,
+                        phone: checkoutSummary.buyerInfo?.phone
+                    },
                     items: []
                 }
             }];
 
-            shoppingCart.items.forEach(item => {
+            checkoutSummary.shoppingCart.items.forEach(item => {
                 newpaymentRequest.transactions![0].item_list?.items?.push(
                     {
                         name: item.name!,
@@ -46,8 +56,20 @@ export module PayPal {
                     });
             });
 
+            newpaymentRequest.redirect_urls = {
+                return_url: 'http://localhost:4200/return',
+                cancel_url: 'http://localhost:4200/cancel'
+            }
 
-            return {} as CheckoutSummary;
+            let paymentResponse = await this._createPaymentRequest(newpaymentRequest);
+
+            checkoutSummary.paymentInfo = {
+                platformPaymentId: paymentResponse.id!,
+                paymentPlatform: 'paypal',
+                transactionResponseBody: paymentResponse
+            }
+
+            return checkoutSummary;
         }
 
         async updatePaymentRequest(paymentRequest: any): Promise<any> {

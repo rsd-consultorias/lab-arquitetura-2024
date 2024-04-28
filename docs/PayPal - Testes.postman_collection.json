@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "a6051ffa-8e0a-45ee-bee0-b5f1395c8f9f",
+		"name": "PayPal - Testes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PAYPAL",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "A21AAJ9rdnmsV42qTZ7EuhrLVKVfVSjGuKnbC4n1oK4nzFa8wlucP7ynPmuwA3JNaZKeETqBTr0kyg_F5paNQTH31boB08V2Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"intent\": \"sale\",\n    \"payer\": {\n        \"payment_method\": \"paypal\"\n    },\n    \"transactions\": [\n        {\n            \"amount\": {\n                \"currency\": \"BRL\",\n                \"total\": \"93.00\",\n                \"details\": {\n                    \"shipping\": \"11\",\n                    \"subtotal\": \"75\",\n                    \"shipping_discount\": \"1.00\",\n                    \"insurance\": \"1.00\",\n                    \"handling_fee\": \"1.00\",\n                    \"tax\": \"6.00\"\n                }\n            },\n            \"description\": \"Teste de teste\",\n            \"payment_options\": {\n                \"allowed_payment_method\": \"IMMEDIATE_PAY\"\n            },\n            \"item_list\": {\n                \"shipping_address\": {\n                    \"recipient_name\": \"PP Plus Recipient\",\n                    \"line1\": \"Gregório Rolim de Oliveira, 42\",\n                    \"line2\": \"JD Serrano II\",\n                    \"city\": \"Votorantim\",\n                    \"country_code\": \"BR\",\n                    \"postal_code\": \"18117-134\",\n                    \"state\": \"São Paulo\",\n                    \"phone\": \"0800-761-0880\"\n                },\n                \"items\": [\n                    {\n                        \"name\": \"handbag\",\n                        \"description\": \"Teste de teste\",\n                        \"quantity\": 1,\n                        \"price\": \"75\",\n                        \"tax\": \"6\",\n                        \"sku\": \"product34\",\n                        \"currency\": \"BRL\"\n                    }\n                ]\n            }\n        }\n    ],\n    \"redirect_urls\": {\n        \"return_url\": \"https://example.com/return\",\n        \"cancel_url\": \"https://example.com/cancel\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://api-m.sandbox.paypal.com/v1/payments/payment",
+							"protocol": "https",
+							"host": [
+								"api-m",
+								"sandbox",
+								"paypal",
+								"com"
+							],
+							"path": [
+								"v1",
+								"payments",
+								"payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Finalize order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "A21AAKztgvbmsp5Yu-QvQk5QUTIdlcY3ZToc9eq8SRWpsz2HsTv1MDrruXA4HcPG35SSXGxrxqIM-DiewCPmicemJOS6aly5w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"payer_id\": \"N9NARR4B5LQDA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.sandbox.paypal.com/v1/payments/payment/PAYID-MYXLDJQ351717217A2947323/execute",
+							"protocol": "https",
+							"host": [
+								"api",
+								"sandbox",
+								"paypal",
+								"com"
+							],
+							"path": [
+								"v1",
+								"payments",
+								"payment",
+								"PAYID-MYXLDJQ351717217A2947323",
+								"execute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "A21AAKztgvbmsp5Yu-QvQk5QUTIdlcY3ZToc9eq8SRWpsz2HsTv1MDrruXA4HcPG35SSXGxrxqIM-DiewCPmicemJOS6aly5w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.sandbox.paypal.com/v1/payments/payment/PAYID-MYXLDJQ351717217A2947323",
+							"protocol": "https",
+							"host": [
+								"api",
+								"sandbox",
+								"paypal",
+								"com"
+							],
+							"path": [
+								"v1",
+								"payments",
+								"payment",
+								"PAYID-MYXLDJQ351717217A2947323"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create payment",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"buyerInfo\": {\n        \"firstName\": \"Fulano\",\n        \"lastName\": \"de Tal\",\n        \"birthDate\": \"1984-08-01\",\n        \"fiscalIdentificationNumber\": \"12345678901\",\n        \"email\": \"sb-brznd30619124@personal.example.com\",\n        \"phone\": \"12324423434535\"\n    },\n    \"currency\": \"BRL\",\n    \"shoppingCart\": {\n        \"buyerInfo\": {\n            \"firstName\": \"Fulano\",\n            \"lastName\": \"de Tal\",\n            \"birthDate\": \"1984-08-01\",\n            \"fiscalIdentificationNumber\": \"12345678901\",\n            \"email\": \"sb-brznd30619124@personal.example.com\",\n            \"phone\": \"12324423434535\"\n        },\n        \"items\": [\n            {\n                \"sku\": \"SKU1234\",\n                \"quantity\": 1,\n                \"price\": 12.00,\n                \"tax\": 1.34,\n                \"shipping\": 0,\n                \"insurance\": 0,\n                \"handlingFee\": 0,\n                \"shippingDiscount\": 0,\n                \"discount\": 0,\n                \"name\": \"Produto 1234\",\n                \"description\": \"Produto 1234 - XPTO - ABCD\"\n            },\n                        {\n                \"sku\": \"SKU5678\",\n                \"quantity\": 3,\n                \"price\": 20.00,\n                \"tax\": 1.34,\n                \"shipping\": 0,\n                \"insurance\": 0,\n                \"handlingFee\": 0,\n                \"shippingDiscount\": 0,\n                \"discount\": 0,\n                \"name\": \"Produto 5678\",\n                \"description\": \"Produto 5678 - XPTO - ABCD\"\n            }\n        ]\n    },\n    \"shippingAddress\": {\n        \"postalCode\": \"09123456\",\n        \"street\": \"Rua de teste, 404\",\n        \"district\": \"Teste\",\n        \"city\": \"Sao Paulo\",\n        \"state\": \"Sap Paulo\",\n        \"countryCode\": \"BR\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/v1/checkout/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"checkout",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Payment details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/checkout/91d01b0a-4022-402c-a66b-2a3ce637f174",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"checkout",
+						"91d01b0a-4022-402c-a66b-2a3ce637f174"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
