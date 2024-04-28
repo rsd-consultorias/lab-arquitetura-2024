@@ -1,10 +1,66 @@
-import { IPaymentService } from "src/core/services/payment-service.interface";
+import { IPaymentService } from "../../core/services/payment-service.interface";
 import { Configuration } from "../../configuration";
+import { ShoppingCart } from "../../core/models/shopping-cart";
+import { CheckoutSummary } from "../../core/models/checkout-summary";
+import { it } from "node:test";
 
 export module PayPal {
     export class PayPalService implements IPaymentService {
 
         constructor() { }
+
+        async createPaymentRequest(shoppingCart: ShoppingCart): Promise<CheckoutSummary> {
+            let newpaymentRequest: dto.PayPalDTO = {};
+
+            newpaymentRequest.intent = 'sale';
+            newpaymentRequest.payer = { payment_method: 'paypal' };
+            newpaymentRequest.transactions = [{
+                // description: item.description!,
+                amount: {
+                    // total: ((item.price * item.quantity) + item.tax! + item.handlingFee! + item.insurance! + item.shipping! - item.shippingDiscount! - item.discount!).toFixed(2),
+                    currency: 'BRL',
+                    details: {
+                        // shipping: item.shipping?.toFixed(2),
+                        // subtotal: item.price.toFixed(2),
+                        // shipping_discount: item.shippingDiscount?.toFixed(2),
+                        // insurance: item.insurance?.toFixed(2),
+                        // handling_fee: item.handlingFee?.toFixed(2),
+                        // tax: item.tax?.toFixed(2)
+                    }
+                },
+                item_list: {
+                    items: []
+                }
+            }];
+
+            shoppingCart.items.forEach(item => {
+                newpaymentRequest.transactions![0].item_list?.items?.push(
+                    {
+                        name: item.name!,
+                        description: item.description!,
+                        quantity: item.quantity!,
+                        price: item.price.toFixed(2),
+                        tax: item.tax?.toFixed(2),
+                        sku: item.sku!,
+                        currency: 'BRL'
+                    });
+            });
+
+
+            return {} as CheckoutSummary;
+        }
+
+        async updatePaymentRequest(paymentRequest: any): Promise<any> {
+            throw new Error("Method not implemented.");
+        }
+
+        async reviewPaymentRequest(paymentRequest: any): Promise<any> {
+            throw new Error("Method not implemented.");
+        }
+
+        async executePaymentRequest(paymentRequest: any): Promise<any> {
+            throw new Error("Method not implemented.");
+        }
 
         private async getAccessToken(): Promise<string> {
             let authKeys = Buffer.from(`${Configuration.PAYPAL_CLIENT_ID}:${Configuration.PAYPAL_CLIENT_SECRET}`).toString('base64');
@@ -27,7 +83,7 @@ export module PayPal {
          * @returns 
          * @see https://developer.paypal.com/docs/regional/br/create-payment-request/
          */
-        public async createPaymentRequest(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
+        private async _createPaymentRequest(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
             let accessToken = await this.getAccessToken();
             let jsonRequest = JSON.stringify(paymentRequest);
 
@@ -43,12 +99,7 @@ export module PayPal {
             );
 
             let response: dto.PayPalDTO = {};
-            try {
-                response = await request.json();
-            }
-            catch (error) {
-                console.warn(error);
-            }
+            response = await request.json();
 
             return response;
         }
@@ -59,7 +110,7 @@ export module PayPal {
          * @returns 
          * @see https://developer.paypal.com/docs/regional/br/update-selection-page/
          */
-        public async updatePaymentRequest(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
+        private async _updatePaymentRequest(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
             return {} as dto.PayPalDTO;
         }
 
@@ -69,7 +120,7 @@ export module PayPal {
          * @returns 
          * @see https://developer.paypal.com/docs/regional/br/order-review-page/
          */
-        public async reviewOrder(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
+        private async _reviewOrder(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
             return {} as dto.PayPalDTO;
         }
 
@@ -79,13 +130,13 @@ export module PayPal {
          * @returns 
          * @see https://developer.paypal.com/docs/regional/br/test-and-execute/
          */
-        public async executeOrder(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
+        private async _executeOrder(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
             let accessToken = await this.getAccessToken();
 
-            let request = await fetch(`${Configuration.PAYPAL_URL}/payments/payment/${paymentRequest.payer!.payer_info!.payer_id!}/execute`,
+            let request = await fetch(`${Configuration.PAYPAL_URL}/v1/payments/payment/${paymentRequest.payer!.payer_info!.payer_id!}/execute`,
                 {
                     method: 'POST',
-                    body: JSON.stringify(paymentRequest),
+                    body: `{payer_id: "${paymentRequest.payer!.payer_info!.payer_id!}"}`,
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }

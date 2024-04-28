@@ -17,7 +17,7 @@ export class CheckoutRepository {
     }
 
     public async findByTransactionId(transactionId: string): Promise<CheckoutSummary> {
-        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John Doe", new Date('1984-08-01'), '123456'), [
+        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John", "Doe", new Date('1984-08-01'), '123456'), [
             { sku: 'XPTO1234', price: 799.34, quantity: 1 },
             { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
         ]);
@@ -28,7 +28,7 @@ export class CheckoutRepository {
     }
 
     public async updateShippingAddress(transactionId: string, address: Address): Promise<CheckoutSummary> {
-        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John Doe", new Date('1984-08-01'), '123456'), [
+        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John", "Doe", new Date('1984-08-01'), '123456'), [
             { sku: 'XPTO1234', price: 799.34, quantity: 1 },
             { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
         ]);
@@ -40,7 +40,7 @@ export class CheckoutRepository {
     }
 
     public async updateBillingAddress(transactionId: string, address: Address): Promise<CheckoutSummary> {
-        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John Doe", new Date('1984-08-01'), '123456'), [
+        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John", "Doe", new Date('1984-08-01'), '123456'), [
             { sku: 'XPTO1234', price: 799.34, quantity: 1 },
             { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
         ]);
@@ -52,7 +52,7 @@ export class CheckoutRepository {
     }
 
     public async updatePaymentInfo(transactionId: string, paymentInfo: PaymentInfo): Promise<CheckoutSummary> {
-        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John Doe", new Date('1984-08-01'), '123456'), [
+        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John", "Doe", new Date('1984-08-01'), '123456'), [
             { sku: 'XPTO1234', price: 799.34, quantity: 1 },
             { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
         ]);
@@ -64,7 +64,7 @@ export class CheckoutRepository {
     }
 
     public async finalize(transactionId: string): Promise<CheckoutSummary> {
-        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John Doe", new Date('1984-08-01'), '123456'), [
+        let shoppingCart = new ShoppingCart(transactionId, new BuyerInfo("John", "Doe", new Date('1984-08-01'), '123456'), [
             { sku: 'XPTO1234', price: 799.34, quantity: 1 },
             { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
         ]);
