@@ -1,6 +1,5 @@
 import { IPaymentService } from "../../core/services/payment-service.interface";
 import { Configuration } from "../../configuration";
-import { ShoppingCart } from "../../core/models/shopping-cart";
 import { CheckoutSummary } from "../../core/models/checkout-summary";
 
 export module PayPal {

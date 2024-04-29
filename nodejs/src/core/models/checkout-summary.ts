@@ -45,10 +45,6 @@ export class CheckoutSummary {
         public billingAddress?: Address,
         public paymentInfo?: PaymentInfo
     ) {
-        if (shoppingCart.buyerInfo) {
-            this.buyerInfo = shoppingCart.buyerInfo;
-        }
-
         if (shoppingCart.items) {
             this.total = shoppingCart.items.map((item) => item.price * item.quantity).reduce((x, y) => x + y);
         }

@@ -27,7 +27,7 @@ export class CheckoutController {
                 let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
 
                 // Creates account if not exists, otherwise returns existing account
-                let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(checkoutSummary.shoppingCart.buyerInfo);
+                let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(checkoutSummary.buyerInfo!);
             
                 let paymentResponse: CheckoutSummary = await paymentService.createPaymentRequest(checkoutSummary);
                 apiResponse.body = paymentResponse;
