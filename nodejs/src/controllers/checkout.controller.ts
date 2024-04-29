@@ -23,16 +23,20 @@ export class CheckoutController {
         // INFO: creates checkout transaction
         httpServer.register(`${CHECKOUT_URL_API}/create`, 'post',
             async (params: ParamsDictionary, body: CheckoutSummary) => {
-                let checkoutSummary: CheckoutSummary = body;
-                let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
+                try {
+                    let checkoutSummary: CheckoutSummary = body;
+                    let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
 
-                // Creates account if not exists, otherwise returns existing account
-                let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(checkoutSummary.buyerInfo!);
+                    // Creates account if not exists, otherwise returns existing account
+                    let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(checkoutSummary.buyerInfo!);
 
-                let paymentResponse: CheckoutSummary = await paymentService.createPaymentRequest(checkoutSummary);
-                apiResponse.body = paymentResponse;
+                    let paymentResponse: CheckoutSummary = await paymentService.createPaymentRequest(checkoutSummary);
+                    apiResponse.body = paymentResponse;
 
-                return apiResponse;
+                    return apiResponse;
+                } catch (error) {
+                    return new APIResponse<CheckoutSummary>(false, 'INTERNAL_SERVER_ERROR');
+                }
             });
 
         // INFO: updates shipping address
@@ -81,33 +85,41 @@ export class CheckoutController {
         // INFO: lists checkout details
         httpServer.register(`${CHECKOUT_URL_API}/:transactionId`, 'get',
             async (params: ParamsDictionary) => {
-                let transactionId = params['transactionId'];
-                let checkoutSummary = await this.checkoutRepository.findByTransactionId(transactionId);
+                try {
+                    let transactionId = params['transactionId'];
+                    let checkoutSummary = await this.checkoutRepository.findByTransactionId(transactionId);
 
-                let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
+                    let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
 
-                return apiResponse;
+                    return apiResponse;
+                } catch (error) {
+                    return new APIResponse<CheckoutSummary>(false, 'INTERNAL_SERVER_ERROR');
+                }
             });
 
         // INFO: finalizes checkout
         httpServer.register(`${CHECKOUT_URL_API}/:transactionId/finalize`, 'post',
             async (params: ParamsDictionary, body: CheckoutSummary) => {
-                let transactionId = params['transactionId'];
-                let checkoutSummary = body;
+                try {
+                    let transactionId = params['transactionId'];
+                    let checkoutSummary = body;
 
-                // call payment service
-                checkoutSummary.paymentInfo!.platormPayerId = 'N9NARR4B5LQDA';
-                checkoutSummary.paymentInfo!.transactionResponseBody = await this.paymentService.executePaymentRequest(checkoutSummary.paymentInfo!);
+                    // call payment service
+                    checkoutSummary.paymentInfo!.platormPayerId = 'N9NARR4B5LQDA';
+                    checkoutSummary.paymentInfo!.transactionResponseBody = await this.paymentService.executePaymentRequest(checkoutSummary.paymentInfo!);
 
 
 
-                // sends data to start the signatures
-                // let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
-                // checkoutSummary = await this.checkoutRepository.finalize(transactionId);
+                    // sends data to start the signatures
+                    // let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
+                    // checkoutSummary = await this.checkoutRepository.finalize(transactionId);
 
-                let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
+                    let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
 
-                return apiResponse;
+                    return apiResponse;
+                } catch (error) {
+                    return new APIResponse<CheckoutSummary>(false, 'INTERNAL_SERVER_ERROR');
+                }
             }
         );
     }
