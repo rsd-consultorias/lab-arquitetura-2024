@@ -52,7 +52,7 @@ export module PayPal {
                     }
                 };
             } catch (error) { }
-            
+
             payPlaRequest.transactions = [{
                 description: 'Compra loja de teste',
                 payment_options: { allowed_payment_method: 'IMMEDIATE_PAY' },
@@ -174,11 +174,12 @@ export module PayPal {
          */
         private async _executeOrder(paymentId: string, payerId: string): Promise<dto.PayPalDTO> {
             let accessToken = await this.getAccessToken();
+            let payId: string = paymentId;
 
-            let request = await fetch(`${Configuration.PAYPAL_URL}/v1/payments/payment/${paymentId}/execute`,
+            let request = await fetch(`${Configuration.PAYPAL_URL}/v1/payments/payment/${payId}/execute`,
                 {
                     method: 'POST',
-                    body: `{"payer_id": "${payerId}"}`,
+                    body: `{"payer_id": "${payId}"}`,
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         "Content-Type": 'application/json'
