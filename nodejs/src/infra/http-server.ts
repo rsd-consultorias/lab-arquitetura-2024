@@ -25,7 +25,7 @@ export class HttpServer implements IHttpServer {
 
     async register(url: string, method: string, callback: Function): Promise<void> {
         this.app[method](url, async function (req: Request, res: Response) {
-            res.json(await callback(req.params, req.body));
+            res.json(await callback(req.params, req.body, req.query));
         });
     }
 

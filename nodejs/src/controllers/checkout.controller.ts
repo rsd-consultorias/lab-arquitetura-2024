@@ -69,15 +69,25 @@ export class CheckoutController {
                 return apiResponse;
             });
 
+        // INFO: approve payment webhook
+        httpServer.register(`${CHECKOUT_URL_API}/approve`, 'get',
+            async (params: Request, body: any, query: ParamsDictionary) => {
+                console.log(JSON.stringify(query));
+
+                return JSON.stringify(query);
+            }
+        );
+
         // INFO: lists checkout details
-        httpServer.register(`${CHECKOUT_URL_API}/:transactionId`, 'get', async (params: ParamsDictionary) => {
-            let transactionId = params['transactionId'];
-            let checkoutSummary = await this.checkoutRepository.findByTransactionId(transactionId);
+        httpServer.register(`${CHECKOUT_URL_API}/:transactionId`, 'get',
+            async (params: ParamsDictionary) => {
+                let transactionId = params['transactionId'];
+                let checkoutSummary = await this.checkoutRepository.findByTransactionId(transactionId);
 
-            let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
+                let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
 
-            return apiResponse;
-        });
+                return apiResponse;
+            });
 
         // INFO: finalizes checkout
         httpServer.register(`${CHECKOUT_URL_API}/:transactionId/finalize`, 'post',
@@ -89,7 +99,7 @@ export class CheckoutController {
                 checkoutSummary.paymentInfo!.platormPayerId = 'N9NARR4B5LQDA';
                 checkoutSummary.paymentInfo!.transactionResponseBody = await this.paymentService.executePaymentRequest(checkoutSummary.paymentInfo!);
 
-                
+
 
                 // sends data to start the signatures
                 // let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);

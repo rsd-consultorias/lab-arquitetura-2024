@@ -39,12 +39,20 @@ export module PayPal {
             let payPlaRequest: dto.PayPalDTO = {};
 
             payPlaRequest.intent = 'sale';
-            payPlaRequest.payer = { 
+
+            payPlaRequest.payer = {
                 payment_method: 'paypal',
-                payer_info: {
-                    payer_id: checkoutSummary.paymentInfo!.transactionResponseBody ? ((checkoutSummary.paymentInfo!.transactionResponseBody) as dto.PayPalDTO).payer?.payer_info?.payer_id! : undefined
-                }
-             };
+            };
+
+            try {
+                payPlaRequest.payer = {
+                    payment_method: 'paypal',
+                    payer_info: {
+                        payer_id: checkoutSummary.paymentInfo!.transactionResponseBody ? ((checkoutSummary.paymentInfo!.transactionResponseBody) as dto.PayPalDTO).payer?.payer_info?.payer_id! : undefined
+                    }
+                };
+            } catch (error) { }
+            
             payPlaRequest.transactions = [{
                 description: 'Compra loja de teste',
                 payment_options: { allowed_payment_method: 'IMMEDIATE_PAY' },
@@ -89,8 +97,8 @@ export module PayPal {
             });
 
             payPlaRequest.redirect_urls = {
-                return_url: 'http://localhost:4200/return',
-                cancel_url: 'http://localhost:4200/cancel'
+                return_url: 'http://localhost:8081/v1/checkout/approve',
+                cancel_url: 'http://localhost:8081/v1/checkout/approve'
             }
 
             return payPlaRequest;
