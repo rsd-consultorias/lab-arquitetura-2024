@@ -174,12 +174,11 @@ export module PayPal {
          */
         private async _executeOrder(paymentId: string, payerId: string): Promise<dto.PayPalDTO> {
             let accessToken = await this.getAccessToken();
-            let payId: string = paymentId;
 
-            let request = await fetch(`${Configuration.PAYPAL_URL}/v1/payments/payment/${payId}/execute`,
+            let request = await fetch(Configuration.PAYPAL_URL + "/v1/payments/payment/" + paymentId + "/execute",
                 {
                     method: 'POST',
-                    body: `{"payer_id": "${payId}"}`,
+                    body: `{"payer_id": "${payerId}"}`,
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         "Content-Type": 'application/json'
