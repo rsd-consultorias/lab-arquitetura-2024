@@ -1,6 +1,7 @@
 import { IPaymentService } from "../../core/services/payment-service.interface";
 import { Configuration } from "../../configuration";
 import { CheckoutSummary } from "../../core/models/checkout-summary";
+import { PaymentInfo } from "src/core/models/payment-info";
 
 export module PayPal {
     export class PayPalService implements IPaymentService {
@@ -8,11 +9,43 @@ export module PayPal {
         constructor() { }
 
         async createPaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
-            let newpaymentRequest: dto.PayPalDTO = {};
+            let newpaymentRequest = this.buildPayPalDTOFromCheckoutSummary(checkoutSummary);
+            let paymentResponse = await this._createPaymentRequest(newpaymentRequest);
 
-            newpaymentRequest.intent = 'sale';
-            newpaymentRequest.payer = { payment_method: 'paypal' };
-            newpaymentRequest.transactions = [{
+            checkoutSummary.paymentInfo = {
+                platformPaymentId: paymentResponse.id!,
+                paymentPlatform: 'paypal',
+                transactionResponseBody: paymentResponse
+            }
+
+            return checkoutSummary;
+        }
+
+        async updatePaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
+            throw new Error("Method not implemented.");
+        }
+
+        async reviewPaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
+            throw new Error("Method not implemented.");
+        }
+
+        async executePaymentRequest(paymentInfo: PaymentInfo): Promise<any> {
+            let paymentResponse = await this._executeOrder(paymentInfo.platformPaymentId!, paymentInfo.platormPayerId!);
+
+            return paymentResponse;
+        }
+
+        private buildPayPalDTOFromCheckoutSummary(checkoutSummary: CheckoutSummary): dto.PayPalDTO {
+            let payPlaRequest: dto.PayPalDTO = {};
+
+            payPlaRequest.intent = 'sale';
+            payPlaRequest.payer = { 
+                payment_method: 'paypal',
+                payer_info: {
+                    payer_id: checkoutSummary.paymentInfo!.transactionResponseBody ? ((checkoutSummary.paymentInfo!.transactionResponseBody) as dto.PayPalDTO).payer?.payer_info?.payer_id! : undefined
+                }
+             };
+            payPlaRequest.transactions = [{
                 description: 'Compra loja de teste',
                 payment_options: { allowed_payment_method: 'IMMEDIATE_PAY' },
                 amount: {
@@ -43,7 +76,7 @@ export module PayPal {
             }];
 
             checkoutSummary.shoppingCart.items.forEach(item => {
-                newpaymentRequest.transactions![0].item_list?.items?.push(
+                payPlaRequest.transactions![0].item_list?.items?.push(
                     {
                         name: item.name!,
                         description: item.description!,
@@ -55,32 +88,12 @@ export module PayPal {
                     });
             });
 
-            newpaymentRequest.redirect_urls = {
+            payPlaRequest.redirect_urls = {
                 return_url: 'http://localhost:4200/return',
                 cancel_url: 'http://localhost:4200/cancel'
             }
 
-            let paymentResponse = await this._createPaymentRequest(newpaymentRequest);
-
-            checkoutSummary.paymentInfo = {
-                platformPaymentId: paymentResponse.id!,
-                paymentPlatform: 'paypal',
-                transactionResponseBody: paymentResponse
-            }
-
-            return checkoutSummary;
-        }
-
-        async updatePaymentRequest(paymentRequest: any): Promise<any> {
-            throw new Error("Method not implemented.");
-        }
-
-        async reviewPaymentRequest(paymentRequest: any): Promise<any> {
-            throw new Error("Method not implemented.");
-        }
-
-        async executePaymentRequest(paymentRequest: any): Promise<any> {
-            throw new Error("Method not implemented.");
+            return payPlaRequest;
         }
 
         private async getAccessToken(): Promise<string> {
@@ -151,15 +164,16 @@ export module PayPal {
          * @returns 
          * @see https://developer.paypal.com/docs/regional/br/test-and-execute/
          */
-        private async _executeOrder(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
+        private async _executeOrder(paymentId: string, payerId: string): Promise<dto.PayPalDTO> {
             let accessToken = await this.getAccessToken();
 
-            let request = await fetch(`${Configuration.PAYPAL_URL}/v1/payments/payment/${paymentRequest.payer!.payer_info!.payer_id!}/execute`,
+            let request = await fetch(`${Configuration.PAYPAL_URL}/v1/payments/payment/${paymentId}/execute`,
                 {
                     method: 'POST',
-                    body: `{payer_id: "${paymentRequest.payer!.payer_info!.payer_id!}"}`,
+                    body: `{"payer_id": "${payerId}"}`,
                     headers: {
-                        Authorization: `Bearer ${accessToken}`
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": 'application/json'
                     }
                 }
             );
