@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { CheckoutSummary, CheckoutState } from "../../core/models/checkout-summary";
 import { ShoppingCart } from "../../core/models/shopping-cart";
-import { Address } from "src/core/models/address";
+import { Address } from "../../core/models/address";
 import { PaymentInfo } from "../../core/models/payment-info";
 
 export class CheckoutRepository {
