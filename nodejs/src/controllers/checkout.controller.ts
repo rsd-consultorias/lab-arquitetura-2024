@@ -28,7 +28,7 @@ export class CheckoutController {
                     let checkoutSummary: CheckoutSummary = body;
                     let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
                     checkoutSummary.transactionId = randomUUID();
-                    
+
                     // Creates account if not exists, otherwise returns existing account
                     let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(checkoutSummary.buyerInfo!);
 
@@ -48,9 +48,7 @@ export class CheckoutController {
                 let transactionId = params['transactionId'];
                 let checkoutSummary = await this.checkoutRepository.updateShippingAddress(transactionId, body);
 
-                let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
-
-                return apiResponse;
+                return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
             });
 
         // INFO: updates billing address
@@ -59,9 +57,7 @@ export class CheckoutController {
                 let transactionId = params['transactionId'];
                 let checkoutSummary = await this.checkoutRepository.updateBillingAddress(transactionId, body);
 
-                let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
-
-                return apiResponse;
+                return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
             });
 
         // INFO: updates payment method 
@@ -71,9 +67,7 @@ export class CheckoutController {
                 let checkoutSummary = await this.checkoutRepository.updatePaymentInfo(transactionId, body);
                 checkoutSummary.paymentInfo = body;
 
-                let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
-
-                return apiResponse;
+                return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
             });
 
         // INFO: approve payment webhook
@@ -92,9 +86,7 @@ export class CheckoutController {
                     let transactionId = params['transactionId'];
                     let checkoutSummary = await this.checkoutRepository.findByTransactionId(transactionId);
 
-                    let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
-
-                    return apiResponse;
+                    return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
                 } catch (error) {
                     return new APIResponse<CheckoutSummary>(false, 'INTERNAL_SERVER_ERROR');
                 }
@@ -109,14 +101,12 @@ export class CheckoutController {
 
                     // call payment service
                     paymentInfo!.transactionResponseBody = await this.paymentService.executePaymentRequest(paymentInfo!);
+                    let checkoutSummary = await this.checkoutRepository.finalize(transactionId);
 
                     // sends data to start the signatures
-                    // let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
-                    // checkoutSummary = await this.checkoutRepository.finalize(transactionId);
-
-                    let apiResponse = new APIResponse<CheckoutSummary>(true);
-
-                    return apiResponse;
+                    let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
+                    
+                    return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
                 } catch (error) {
                     return new APIResponse<CheckoutSummary>(false, 'INTERNAL_SERVER_ERROR');
                 }
