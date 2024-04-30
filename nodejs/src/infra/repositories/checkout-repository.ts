@@ -3,25 +3,50 @@ import { CheckoutSummary, CheckoutState } from "../../core/models/checkout-summa
 import { ShoppingCart } from "../../core/models/shopping-cart";
 import { Address } from "../../core/models/address";
 import { PaymentInfo } from "../../core/models/payment-info";
+import { DataTypes, Model, ModelStatic, Sequelize } from "sequelize";
+import { get } from "http";
 
 export class CheckoutRepository {
 
-    constructor() { }
+    private _repository: ModelStatic<Model<any, any>>;
 
-    public async createCheckout(shoppingCart: ShoppingCart): Promise<CheckoutSummary> {
-        let checkoutSummary = new CheckoutSummary(randomUUID(), shoppingCart);
+    constructor(private readonly database: Sequelize) {
+        this._repository = this.database.define('checkout_summary', {
+            id: {
+                type: DataTypes.UUIDV4,
+                primaryKey: true
+            },
+            checkout: {
+                type: DataTypes.JSON
+            }
+        }, {
+            paranoid: true
+        });
+    }
+
+    public async createCheckout(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
         checkoutSummary.checkoutState = CheckoutState.CREATED;
+
+        await this._repository.create({
+            id: checkoutSummary.transactionId,
+            checkout: checkoutSummary
+        });
 
         return checkoutSummary;
     }
 
     public async findByTransactionId(transactionId: string): Promise<CheckoutSummary> {
-        let shoppingCart = new ShoppingCart(transactionId, [
-            { sku: 'XPTO1234', price: 799.34, quantity: 1 },
-            { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
-        ]);
-        let checkoutSummary = new CheckoutSummary(transactionId, shoppingCart);
-        checkoutSummary.checkoutState = CheckoutState.CREATED;
+        let checkoutSummary: CheckoutSummary;
+
+        let found = await this._repository.findOne({
+            where: {
+                id: transactionId
+            }
+        });
+
+        console.log(JSON.stringify(found!));
+
+        checkoutSummary = found?.get('checkout') as CheckoutSummary;
 
         return checkoutSummary;
     }

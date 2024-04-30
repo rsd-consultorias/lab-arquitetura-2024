@@ -8,6 +8,7 @@ import { APIResponse } from "../view-models/api-response";
 import { CheckoutRepository } from "../infra/repositories/checkout-repository";
 import { AccountQueueService } from "../infra/message-broker/account.queue";
 import { SubscriptionQueueService } from "../infra/message-broker/subscription.queue";
+import { randomUUID } from "crypto";
 
 const CHECKOUT_URL_API = '/v1/checkout';
 
@@ -26,11 +27,13 @@ export class CheckoutController {
                 try {
                     let checkoutSummary: CheckoutSummary = body;
                     let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
-
+                    checkoutSummary.transactionId = randomUUID();
+                    
                     // Creates account if not exists, otherwise returns existing account
                     let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(checkoutSummary.buyerInfo!);
 
                     let paymentResponse: CheckoutSummary = await paymentService.createPaymentRequest(checkoutSummary);
+                    this.checkoutRepository.createCheckout(paymentResponse);
                     apiResponse.body = paymentResponse;
 
                     return apiResponse;
