@@ -44,8 +44,6 @@ export class CheckoutRepository {
             }
         });
 
-        console.log(JSON.stringify(found!));
-
         checkoutSummary = found?.get('checkout') as CheckoutSummary;
 
         return checkoutSummary;

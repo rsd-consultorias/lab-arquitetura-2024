@@ -105,7 +105,7 @@ export class CheckoutController {
 
                     // sends data to start the signatures
                     let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
-                    
+
                     return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
                 } catch (error) {
                     return new APIResponse<CheckoutSummary>(false, 'INTERNAL_SERVER_ERROR');
