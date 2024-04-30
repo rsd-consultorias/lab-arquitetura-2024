@@ -15,6 +15,7 @@ export module PayPal {
 
                 checkoutSummary.paymentInfo = {
                     platformPaymentId: paymentResponse.id!,
+                    platormPayerId: paymentResponse.payer?.payer_info?.payer_id,
                     paymentPlatform: 'paypal',
                     transactionResponseBody: paymentResponse
                 }
