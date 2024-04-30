@@ -14,7 +14,7 @@ export function initServer(port: number) {
         checkoutRepository, 
         new AccountQueueService(),
         new SubscriptionQueueService(),
-        new PayPal.PayPalService(),
+        new PayPal.v1.PayPalService(),
         httpServer);
 
     httpServer.listen(port);

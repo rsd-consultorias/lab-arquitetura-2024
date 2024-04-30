@@ -1,13 +1,13 @@
 import { ParamsDictionary } from "express-serve-static-core";
 import { Address } from "../core/models/address";
 import { CheckoutSummary } from "../core/models/checkout-summary";
+import { IPaymentService } from "../core/services/payment-service.interface";
 import { PaymentInfo } from "../core/models/payment-info";
 import { IHttpServer } from "../infra/http-server";
 import { APIResponse } from "../view-models/api-response";
 import { CheckoutRepository } from "../infra/repositories/checkout-repository";
 import { AccountQueueService } from "../infra/message-broker/account.queue";
 import { SubscriptionQueueService } from "../infra/message-broker/subscription.queue";
-import { PayPal } from "../infra/services/paypal.service";
 
 const CHECKOUT_URL_API = '/v1/checkout';
 
@@ -17,7 +17,7 @@ export class CheckoutController {
         private checkoutRepository: CheckoutRepository,
         private accountQueue: AccountQueueService,
         private subscriptionQueue: SubscriptionQueueService,
-        private paymentService = new PayPal.PayPalService,
+        private paymentService: IPaymentService,
         private httpServer: IHttpServer) {
 
         // INFO: creates checkout transaction
@@ -99,22 +99,19 @@ export class CheckoutController {
 
         // INFO: finalizes checkout
         httpServer.register(`${CHECKOUT_URL_API}/:transactionId/finalize`, 'post',
-            async (params: ParamsDictionary, body: CheckoutSummary) => {
+            async (params: ParamsDictionary, body: PaymentInfo) => {
                 try {
                     let transactionId = params['transactionId'];
-                    let checkoutSummary = body;
+                    let paymentInfo = body;
 
                     // call payment service
-                    checkoutSummary.paymentInfo!.platormPayerId = 'N9NARR4B5LQDA';
-                    checkoutSummary.paymentInfo!.transactionResponseBody = await this.paymentService.executePaymentRequest(checkoutSummary.paymentInfo!);
-
-
+                    paymentInfo!.transactionResponseBody = await this.paymentService.executePaymentRequest(paymentInfo!);
 
                     // sends data to start the signatures
                     // let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
                     // checkoutSummary = await this.checkoutRepository.finalize(transactionId);
 
-                    let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
+                    let apiResponse = new APIResponse<CheckoutSummary>(true);
 
                     return apiResponse;
                 } catch (error) {

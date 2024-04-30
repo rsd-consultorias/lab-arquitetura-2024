@@ -7,6 +7,9 @@ export class PaymentInfo {
     /** Platform payer id */
     public platormPayerId?: string;
 
+    /** Platform token */
+    public token?: string;
+
     /** Persists the whole response from payment platform */
     public transactionResponseBody?: any;
 }
