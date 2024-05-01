@@ -99,8 +99,8 @@ export module PayPal {
                 });
 
                 payPlaRequest.redirect_urls = {
-                    return_url: 'http://localhost:8081/v1/checkout/approve',
-                    cancel_url: 'http://localhost:8081/v1/checkout/approve'
+                    return_url: 'http://localhost:4200/checkout-approved',
+                    cancel_url: 'http://localhost:4200/checkout-canceled'
                 }
 
                 return payPlaRequest;

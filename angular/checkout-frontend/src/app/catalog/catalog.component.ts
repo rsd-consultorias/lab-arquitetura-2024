@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./catalog.component.scss']
 })
 export class CatalogComponent {
+  catalog: Number[] = [];
 
+  constructor() {
+    for (let i = 0; i < 10; i++) { this.catalog.push(i); }
+  }
 }
