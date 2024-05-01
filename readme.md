@@ -19,6 +19,10 @@ Caso houver necessidade de mais detalhes para entender o modelo, deverá ser dis
 
 ![Diagrama de Interação](docs/diagrama-interacao.jpg)
 
+### Gateway
+
+[Referência](https://learn.microsoft.com/pt-br/dotnet/architecture/microservices/multi-container-microservice-net-applications/implement-api-gateways-with-ocelot)
+
 ## Planejamento e Controle do Ciclo de Desenvolvimento
 
 Cada ciclo de desenvolvimento deverá ser planejado e acordado com todos as datas de término e devem ser definido milestones para que incrementos funcionais sejam entregues afim de dar subsídio para que tarefas dependentes possam ser programadas com antecedência.

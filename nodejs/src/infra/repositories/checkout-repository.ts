@@ -85,13 +85,29 @@ export class CheckoutRepository {
         return checkoutSummary;
     }
 
-    public async finalize(transactionId: string): Promise<CheckoutSummary> {
-        let shoppingCart = new ShoppingCart(transactionId, [
-            { sku: 'XPTO1234', price: 799.34, quantity: 1 },
-            { sku: 'XPTO5678', price: 1799.34, quantity: 2 }
-        ]);
-        let checkoutSummary = new CheckoutSummary(transactionId, shoppingCart);
+    public async finalize(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
         checkoutSummary.checkoutState = CheckoutState.ACCEPTED;
+
+        let found = await this._repository.findOne({
+            where: {
+                id: checkoutSummary.transactionId
+            }
+        });
+
+        found?.set('checkout', checkoutSummary);
+
+        await found?.save({
+            fields: ['checkout']
+        });
+
+        await found?.reload();
+
+        // found = await this._repository.findOne({
+        //     where: {
+        //         id: checkoutSummary.transactionId
+        //     }
+        // });
+        checkoutSummary = found?.get('checkout') as CheckoutSummary;
 
         return checkoutSummary;
     }

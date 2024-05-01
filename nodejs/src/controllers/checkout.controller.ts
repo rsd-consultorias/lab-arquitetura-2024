@@ -103,8 +103,8 @@ export class CheckoutController {
 
                     // call payment service
                     paymentInfo!.transactionResponseBody = await this.paymentService.executePaymentRequest(paymentInfo!);
-                    // TODO: save to database
-                    // checkoutSummary = await this.checkoutRepository.finalize(transactionId);
+                    checkoutSummary.paymentInfo = paymentInfo;
+                    checkoutSummary = await this.checkoutRepository.finalize(checkoutSummary);
 
                     // sends data to start the signatures
                     let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
