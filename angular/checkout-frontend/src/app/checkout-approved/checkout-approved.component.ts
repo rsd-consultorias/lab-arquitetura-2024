@@ -21,8 +21,5 @@ export class CheckoutApprovedComponent implements OnInit {
       this.payerId = params.get('PayerID')!;
       this.token = params.get('token')!;
     });
-    // this.paymentId = this.activateRouter.snapshot.paramMap.get('paymentId')!;
-    // this.payerId = this.activateRouter.snapshot.paramMap.get('PayerID')!;
-    // this.token = this.activateRouter.snapshot.paramMap.get('token')!;
   }
 }

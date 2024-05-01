@@ -14,6 +14,8 @@ import { RDNavBarComponent } from './components/nav-bar/nav-bar.component';
 import { RDCardComponent } from './components/card/card.component';
 import { CheckoutApprovedComponent } from './checkout-approved/checkout-approved.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { MatButtonModule } from '@angular/material/button';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,8 +33,10 @@ import { CheckoutComponent } from './checkout/checkout.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     RDNavBarComponent,
-    RDCardComponent
+    RDCardComponent,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
