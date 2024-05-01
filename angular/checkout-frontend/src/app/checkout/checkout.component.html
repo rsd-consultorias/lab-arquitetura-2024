@@ -1,11 +1,18 @@
 <mat-stepper [linear]="true" #stepper style="height: calc(100vh - 100px); width: 100vw;">
     <mat-step>
         <div>
-            <li>
-                <ul *ngFor="let item of checkoutSummary?.shoppingCart?.items">
-                    {{item.name}}
-                </ul>
-            </li>
+            <ol>
+                <li *ngFor="let item of checkoutSummary?.shoppingCart?.items">
+                    <p>
+                        <b>{{item.name}} (x {{item.quantity}} un.)</b><br />
+                        {{item.description}}<br />
+                        SKU: {{item.sku}}<br />
+                        <span style="color: green; font-weight: bold;">{{item.price | currency:checkoutSummary?.currency}}</span>
+                    </p>
+                </li>
+            </ol>
+            <br />
+            <span style="color: green; font-weight: bold">Total: {{totalPrice | currency:checkoutSummary?.currency}}</span>
         </div>
         <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
             <button mat-flat-button matStepperNext class="center" color="primary" style="width: 80%;">Continue</button>
@@ -13,30 +20,65 @@
     </mat-step>
     <mat-step>
         <div>
-            <li>
-                <ul *ngFor="let item of checkoutSummary?.shoppingCart?.items">
-                    {{item.name}}
-                </ul>
-            </li>
+            <mat-form-field style="width: 100%;">
+                <mat-label>Nome</mat-label>
+                <input matInput
+                    value="{{checkoutSummary?.buyerInfo?.firstName}} {{checkoutSummary?.buyerInfo?.lastName}}">
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+                <mat-label>CPF</mat-label>
+                <input matInput value="{{checkoutSummary?.buyerInfo?.fiscalIdentificationNumber}}">
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+                <mat-label>e-mail</mat-label>
+                <input matInput value="{{checkoutSummary?.buyerInfo?.email}}">
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+                <mat-label>Fone</mat-label>
+                <input matInput value="{{checkoutSummary?.buyerInfo?.phone}}">
+            </mat-form-field>
+
         </div>
         <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
             <button mat-flat-button matStepperNext class="center" color="primary" style="width: 80%;">Continue</button>
         </div>
     </mat-step>
     <mat-step>
+        <mat-form-field style="width: 100%;">
+            <mat-label>Rua</mat-label>
+            <input matInput value="{{checkoutSummary?.shippingAddress?.street}}">
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+            <mat-label>Bairro</mat-label>
+            <input matInput value="{{checkoutSummary?.shippingAddress?.district}}">
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+            <mat-label>Cidade</mat-label>
+            <input matInput value="{{checkoutSummary?.shippingAddress?.city}}">
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+            <mat-label>Estado</mat-label>
+            <input matInput value="{{checkoutSummary?.shippingAddress?.state}}">
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+            <mat-label>CEP</mat-label>
+            <input matInput value="{{checkoutSummary?.shippingAddress?.postalCode}}">
+        </mat-form-field>
+
         <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
             <button mat-flat-button matStepperNext class="center" color="primary" style="width: 80%;"
                 (click)="createOrder()">Continue</button>
         </div>
     </mat-step>
     <mat-step>
-        <div>
-            <li>
-                <ul *ngFor="let item of checkoutSummary?.shoppingCart?.items">
-                    {{item.name}}
-                </ul>
-            </li>
-        </div>
+        <span style="color: green;">Valor: {{totalPrice | currency:checkoutSummary?.currency}}</span><br />
+        <span style="color: green;">Desconto: {{-totalDiscount! | currency:checkoutSummary?.currency}}</span><br />
+        <span style="color: green;">Imposto: {{-totalTax! | currency:checkoutSummary?.currency}}</span><br />
+        <span style="color: green;">Frete: {{totalShipping | currency:checkoutSummary?.currency}}</span><br />
+        <span style="color: green;">Desconto no Frete: {{-totalShippingDiscount! | currency:checkoutSummary?.currency}}</span><br />
+        <span style="color: green;">Taxa de Manuseio: {{totalHandlingFee | currency:checkoutSummary?.currency}}</span><br /><br />
+        <span style="color: green; font-weight: bold">Total: {{totalAmount | currency:checkoutSummary?.currency}}</span><br />
+
         <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
             <button mat-flat-button class="center" color="primary" style="width: 80%;"
                 (click)="requestApproval()">Pagar</button>

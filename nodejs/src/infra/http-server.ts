@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 
 export interface IHttpServer {
     register(url: string, method: string, callback: Function): Promise<void>;
-    listen(port: number): void;
+    listen(port: number, host: string): void;
 }
 
 export class HttpServer implements IHttpServer {
@@ -13,6 +13,7 @@ export class HttpServer implements IHttpServer {
         const corsOptions = {
             origin: [
                 'http://localhost:4200',
+                'http://192.168.100.64:4200'
             ]
         };
 
@@ -29,8 +30,9 @@ export class HttpServer implements IHttpServer {
         });
     }
 
-    listen(port: number): void {
-        this.app.listen(port);
+    listen(port: number, host: string): void {
+        this.app.listen(port, host);
+        console.log(`${new Date().toISOString()} Respondendo no host ${host}`);
         console.log(`${new Date().toISOString()} Escutando porta ${port}`);
         console.log(`${new Date().toISOString()} Ambiente ${process.env.NODE_ENV || 'development'}`);
     }

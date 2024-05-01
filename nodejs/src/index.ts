@@ -26,7 +26,7 @@ export function initServer(port: number) {
         new PayPal.v1.PayPalService(),
         httpServer);
 
-    httpServer.listen(port);
+    httpServer.listen(port, '0.0.0.0');
 }
 
 initServer(parseInt(Configuration.SERVER_PORT));
