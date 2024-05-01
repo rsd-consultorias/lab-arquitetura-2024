@@ -22,7 +22,7 @@ export class PaymentService {
     return this.checkoutSummary;
   }
 
-  requestApproval(): Observable<CheckoutSummary> {
+  createOrder(): Observable<CheckoutSummary> {
     return this.httpClient.post<CheckoutSummary>(`http://localhost:8080/v1/checkout/create`, {
       "buyerInfo": {
         "firstName": "Fulano",

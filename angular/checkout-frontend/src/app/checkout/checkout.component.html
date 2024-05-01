@@ -1,3 +1,45 @@
-<p>checkout works!</p>
-
-<button mat-flat-button color="primary" style="width: 100vw;" (click)="requestApproval()">Pagar</button>
+<mat-stepper [linear]="true" #stepper style="height: calc(100vh - 100px); width: 100vw;">
+    <mat-step>
+        <div>
+            <li>
+                <ul *ngFor="let item of checkoutSummary?.shoppingCart?.items">
+                    {{item.name}}
+                </ul>
+            </li>
+        </div>
+        <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
+            <button mat-flat-button matStepperNext class="center" color="primary" style="width: 80%;">Continue</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <div>
+            <li>
+                <ul *ngFor="let item of checkoutSummary?.shoppingCart?.items">
+                    {{item.name}}
+                </ul>
+            </li>
+        </div>
+        <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
+            <button mat-flat-button matStepperNext class="center" color="primary" style="width: 80%;">Continue</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
+            <button mat-flat-button matStepperNext class="center" color="primary" style="width: 80%;"
+                (click)="createOrder()">Continue</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <div>
+            <li>
+                <ul *ngFor="let item of checkoutSummary?.shoppingCart?.items">
+                    {{item.name}}
+                </ul>
+            </li>
+        </div>
+        <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
+            <button mat-flat-button class="center" color="primary" style="width: 80%;"
+                (click)="requestApproval()">Pagar</button>
+        </div>
+    </mat-step>
+</mat-stepper>

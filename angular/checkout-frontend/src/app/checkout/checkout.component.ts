@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PaymentService } from '../services/payment.service';
 import { CheckoutSummary } from '../models/checkout-summary';
 
@@ -7,19 +7,27 @@ import { CheckoutSummary } from '../models/checkout-summary';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements OnInit {
 
-  constructor(private paymentService: PaymentService) {
+  checkoutSummary?: CheckoutSummary;
 
+  constructor(
+    protected paymentService: PaymentService
+  ) { }
+
+  ngOnInit(): void {
+    
+  }
+
+  createOrder() {
+    this.paymentService.createOrder().subscribe({
+      next: (response: any) => {
+        this.checkoutSummary = this.paymentService.updateCheckoutSummary(response.body);
+      }
+    });
   }
 
   requestApproval() {
-    this.paymentService.requestApproval().subscribe({
-      next: (response: CheckoutSummary) => {
-        this.paymentService.updateCheckoutSummary(response);
-        // @ts-ignore
-        window.location.href = response.body.paymentInfo?.transactionResponseBody.links.filter(item => item.rel === 'approval_url').map(item => item.href)[0];
-      }
-    });
+    window.location.href = this.checkoutSummary?.paymentInfo?.transactionResponseBody.links.filter((item: { rel: string; }) => item.rel === 'approval_url').map((item: { href: any; }) => item.href)[0];
   }
 }

@@ -16,6 +16,10 @@ import { CheckoutApprovedComponent } from './checkout-approved/checkout-approved
 import { CheckoutComponent } from './checkout/checkout.component';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,13 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     RDNavBarComponent,
     RDCardComponent,
-    MatButtonModule
+    MatButtonModule,
+    MatButtonModule,
+    MatStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
