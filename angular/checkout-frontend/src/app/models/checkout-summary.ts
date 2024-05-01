@@ -39,13 +39,13 @@ export class CheckoutSummary {
     public approvalUrl?: string;
 
     constructor(
-        public transactionId: string,
-        public shoppingCart: ShoppingCart,
+        public transactionId?: string,
+        public shoppingCart?: ShoppingCart,
         public shippingAddress?: Address,
         public billingAddress?: Address,
         public paymentInfo?: PaymentInfo
     ) {
-        if (shoppingCart.items) {
+        if (shoppingCart?.items) {
             this.total = shoppingCart.items.map((item) => item.price * item.quantity).reduce((x, y) => x + y);
         }
     }

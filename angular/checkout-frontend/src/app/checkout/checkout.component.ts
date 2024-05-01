@@ -16,6 +16,7 @@ export class CheckoutComponent {
   requestApproval() {
     this.paymentService.requestApproval().subscribe({
       next: (response: CheckoutSummary) => {
+        this.paymentService.updateCheckoutSummary(response);
         // @ts-ignore
         window.location.href = response.body.paymentInfo?.transactionResponseBody.links.filter(item => item.rel === 'approval_url').map(item => item.href)[0];
       }

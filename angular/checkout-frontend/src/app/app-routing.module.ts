@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'catalog', component: CatalogComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'checkout-approved', component: CheckoutApprovedComponent },
-  { path: 'checkout-sucess', component: CheckoutSuccessComponent },
+  { path: 'checkout-success', component: CheckoutSuccessComponent },
   { path: 'checkout-canceled', component: CheckoutCanceledComponent }
 ];
 

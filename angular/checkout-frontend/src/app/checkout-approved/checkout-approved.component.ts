@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { PaymentService } from '../services/payment.service';
 
 @Component({
   selector: 'app-checkout-approved',
@@ -12,7 +13,9 @@ export class CheckoutApprovedComponent implements OnInit {
   payerId: string = '';
   token: string = '';
 
-  constructor(private router: Router,
+  constructor(
+    private paymentService: PaymentService,
+    private router: Router,
     private activateRouter: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -20,6 +23,11 @@ export class CheckoutApprovedComponent implements OnInit {
       this.paymentId = params.get('paymentId')!;
       this.payerId = params.get('PayerID')!;
       this.token = params.get('token')!;
+
+      this.paymentService.finalizePayment().subscribe({
+        next: () => { this.router.navigate(['checkout-success']); },
+        error: (error) => alert(error),
+      });
     });
   }
 }

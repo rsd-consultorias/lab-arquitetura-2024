@@ -7,8 +7,20 @@ import { CheckoutSummary } from '../models/checkout-summary';
   providedIn: 'root'
 })
 export class PaymentService {
+  
+  private checkoutSummary: CheckoutSummary = new CheckoutSummary();
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient) { }
+
+  updateCheckoutSummary(updateTo: CheckoutSummary): CheckoutSummary {
+    this.checkoutSummary = updateTo;
+    return this.checkoutSummary;
+  }
+
+  getCheckoutSummary(): CheckoutSummary {
+    return this.checkoutSummary;
+  }
 
   requestApproval(): Observable<CheckoutSummary> {
     return this.httpClient.post<CheckoutSummary>(`http://localhost:8080/v1/checkout/create`, {
@@ -62,7 +74,7 @@ export class PaymentService {
     });
   }
 
-  finalizePayment(checkoutSummary: CheckoutSummary): Observable<CheckoutSummary> {
-    return this.httpClient.post<CheckoutSummary>(`http://localhost:8080/v1/checkout/${checkoutSummary.transactionId}/finalize`, checkoutSummary.paymentInfo);
+  finalizePayment(): Observable<CheckoutSummary> {
+    return this.httpClient.post<CheckoutSummary>(`http://localhost:8080/v1/checkout/${this.checkoutSummary.transactionId}/finalize`, this.checkoutSummary.paymentInfo);
   }
 }
