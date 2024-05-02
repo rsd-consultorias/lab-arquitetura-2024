@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PaymentService } from '../services/payment.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-checkout-approved',
@@ -15,6 +16,7 @@ export class CheckoutApprovedComponent implements OnInit {
 
   constructor(
     private paymentService: PaymentService,
+    private notificationService: NotificationService,
     private router: Router,
     private activateRouter: ActivatedRoute) { }
 
@@ -29,7 +31,10 @@ export class CheckoutApprovedComponent implements OnInit {
         platormPayerId: this.payerId
       }).subscribe({
         next: () => { this.router.navigate(['checkout-success']); },
-        error: (error) => alert(error),
+        error: (error) => { alert(error) },
+        complete: () => {
+          this.notificationService.hideSpinner();
+        }
       });
     });
   }

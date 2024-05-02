@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PaymentService } from '../services/payment.service';
 import { CheckoutSummary } from '../models/checkout-summary';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-checkout',
@@ -20,7 +21,8 @@ export class CheckoutComponent implements OnInit {
   totalHandlingFee?: number;
 
   constructor(
-    protected paymentService: PaymentService
+    protected paymentService: PaymentService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -37,15 +39,19 @@ export class CheckoutComponent implements OnInit {
   }
 
   createOrder() {
+    this.notificationService.showSpinner();
     this.paymentService.createOrder().subscribe({
       next: (response: any) => {
         this.checkoutSummary = this.paymentService.setCheckoutSummary(response.body);
       },
-      complete: () => { }
+      complete: () => {
+        this.notificationService.hideSpinner();
+      }
     });
   }
 
   requestApproval() {
+    this.notificationService.showSpinner();
     window.location.href = this.checkoutSummary?.paymentInfo?.approveUrl!;
   }
 }

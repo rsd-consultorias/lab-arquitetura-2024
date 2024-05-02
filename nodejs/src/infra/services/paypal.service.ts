@@ -1,4 +1,4 @@
-import { IPaymentService } from "../../core/services/payment-service.interface";
+import { IPaymentService } from "../../core/interfaces/payment-service.interface";
 import { Configuration } from "../../configuration";
 import { CheckoutSummary } from "../../core/models/checkout-summary";
 import { PaymentInfo } from "../../core/models/payment-info";

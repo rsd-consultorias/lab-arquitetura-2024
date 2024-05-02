@@ -65,6 +65,12 @@ export class CheckoutRepository {
             }
         });
 
+        if(platformResponse.state) {
+            let checkout = found?.get('checkout') as CheckoutSummary;
+            checkout.checkoutState = platformResponse.state === 'approved' ? CheckoutState.PAYMENT_ACCEPTED : CheckoutState.ACCEPTED;
+            found?.set('checkout', checkout);
+        }
+
         found?.set('platformResponse', platformResponse);
 
         let saved = await found?.save();

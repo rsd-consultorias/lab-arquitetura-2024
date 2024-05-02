@@ -1,7 +1,7 @@
 import { ParamsDictionary } from "express-serve-static-core";
 import { Address } from "../core/models/address";
-import { CheckoutSummary } from "../core/models/checkout-summary";
-import { IPaymentService } from "../core/services/payment-service.interface";
+import { CheckoutState, CheckoutSummary } from "../core/models/checkout-summary";
+import { IPaymentService } from "../core/interfaces/payment-service.interface";
 import { PaymentInfo } from "../core/models/payment-info";
 import { IHttpServer } from "../infra/http-server";
 import { APIResponse } from "../view-models/api-response";
@@ -26,6 +26,7 @@ export class CheckoutController {
             async (params: ParamsDictionary, body: CheckoutSummary) => {
                 try {
                     let checkoutSummary: CheckoutSummary = body;
+                    checkoutSummary.checkoutState = CheckoutState.CREATED;
                     let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
                     checkoutSummary.transactionId = randomUUID();
 
