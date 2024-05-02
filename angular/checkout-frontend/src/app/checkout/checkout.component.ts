@@ -24,6 +24,7 @@ export class CheckoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.paymentService.setCheckoutSummary(this.paymentService.checkoutSummary);
     this.checkoutSummary = this.paymentService.getCheckoutSummary();
     this.totalPrice = this.checkoutSummary.shoppingCart?.items.map(item => item.price).reduce((previous, current) => current + previous);
     this.totalDiscount = this.checkoutSummary.shoppingCart?.items.map(item => item.discount).reduce((previous, current) => current! + previous!);
@@ -31,19 +32,20 @@ export class CheckoutComponent implements OnInit {
     this.totalShipping = this.checkoutSummary.shoppingCart?.items.map(item => item.shipping).reduce((previous, current) => current! + previous!);
     this.totalShippingDiscount = this.checkoutSummary.shoppingCart?.items.map(item => item.shippingDiscount).reduce((previous, current) => current! + previous!);
     this.totalHandlingFee = this.checkoutSummary.shoppingCart?.items.map(item => item.handlingFee).reduce((previous, current) => current! + previous!);
-    
+
     this.totalAmount = this.totalPrice! - this.totalDiscount! + this.totalTax! + this.totalShipping! - this.totalShippingDiscount! + this.totalHandlingFee!;
   }
 
   createOrder() {
     this.paymentService.createOrder().subscribe({
       next: (response: any) => {
-        this.checkoutSummary = this.paymentService.updateCheckoutSummary(response.body);
-      }
+        this.checkoutSummary = this.paymentService.setCheckoutSummary(response.body);
+      },
+      complete: () => { }
     });
   }
 
   requestApproval() {
-    window.location.href = this.checkoutSummary?.paymentInfo?.transactionResponseBody.links.filter((item: { rel: string; }) => item.rel === 'approval_url').map((item: { href: any; }) => item.href)[0];
+    window.location.href = this.checkoutSummary?.paymentInfo?.approveUrl!;
   }
 }

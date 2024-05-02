@@ -12,7 +12,7 @@ export function initServer(port: number) {
     const sequelize = new Sequelize({
         dialect: 'sqlite',
         storage: '../.data/orders-db',
-        logging: true
+        logging: true,
     });
 
     sequelize.sync();

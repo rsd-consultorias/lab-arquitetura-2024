@@ -10,6 +10,6 @@ export class PaymentInfo {
     /** Platform token */
     public token?: string;
 
-    /** Persists the whole response from payment platform */
-    public transactionResponseBody?: any;
+    public approveUrl?: string;
+    public cancelUrl?: string;
 }

@@ -35,8 +35,6 @@ export class CheckoutSummary {
     public total?: number;
     public currency?: string;
     public checkoutState?: CheckoutState;
-    /** URL to customer approve the payment */
-    public approvalUrl?: string;
 
     constructor(
         public transactionId?: string,

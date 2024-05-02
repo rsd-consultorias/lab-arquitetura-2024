@@ -30,54 +30,18 @@ export class CheckoutController {
                     checkoutSummary.transactionId = randomUUID();
 
                     // Creates account if not exists, otherwise returns existing account
-                    let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(checkoutSummary.buyerInfo!);
+                    // let accountResponse = await this.accountQueue.sendbuyerInfoToAccountVerification(checkoutSummary.buyerInfo!);
+                    let paymentResponse = await paymentService.createPaymentRequest(checkoutSummary);
 
-                    let paymentResponse: CheckoutSummary = await paymentService.createPaymentRequest(checkoutSummary);
-                    this.checkoutRepository.createCheckout(paymentResponse);
-                    apiResponse.body = paymentResponse;
+                    this.checkoutRepository.saveCreatedCheckout(paymentResponse.checkoutSummary!, paymentResponse.platformResponse!);
+                    apiResponse.body = paymentResponse.checkoutSummary;
 
                     return apiResponse;
                 } catch (error) {
+                    console.error(error);
                     return new APIResponse<CheckoutSummary>(false, 'INTERNAL_SERVER_ERROR');
                 }
             });
-
-        // INFO: updates shipping address
-        httpServer.register(`${CHECKOUT_URL_API}/:transactionId/shipping-address`, 'put',
-            async (params: ParamsDictionary, body: Address): Promise<APIResponse<CheckoutSummary>> => {
-                let transactionId = params['transactionId'];
-                let checkoutSummary = await this.checkoutRepository.updateShippingAddress(transactionId, body);
-
-                return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
-            });
-
-        // INFO: updates billing address
-        httpServer.register(`${CHECKOUT_URL_API}/:transactionId/billing-adddress`, 'put',
-            async (params: ParamsDictionary, body: Address): Promise<APIResponse<CheckoutSummary>> => {
-                let transactionId = params['transactionId'];
-                let checkoutSummary = await this.checkoutRepository.updateBillingAddress(transactionId, body);
-
-                return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
-            });
-
-        // INFO: updates payment method 
-        httpServer.register(`${CHECKOUT_URL_API}/:transactionId/payment-option`, 'put',
-            async (params: ParamsDictionary, body: PaymentInfo): Promise<APIResponse<CheckoutSummary>> => {
-                let transactionId = params['transactionId'];
-                let checkoutSummary = await this.checkoutRepository.updatePaymentInfo(transactionId, body);
-                checkoutSummary.paymentInfo = body;
-
-                return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
-            });
-
-        // INFO: approve payment webhook
-        httpServer.register(`${CHECKOUT_URL_API}/approve`, 'get',
-            async (params: Request, body: any, query: ParamsDictionary) => {
-                console.log(JSON.stringify(query));
-
-                return JSON.stringify(query);
-            }
-        );
 
         // INFO: lists checkout details
         httpServer.register(`${CHECKOUT_URL_API}/:transactionId`, 'get',
@@ -88,6 +52,7 @@ export class CheckoutController {
 
                     return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
                 } catch (error) {
+                    console.error(error);
                     return new APIResponse<CheckoutSummary>(false, 'INTERNAL_SERVER_ERROR');
                 }
             });
@@ -99,18 +64,16 @@ export class CheckoutController {
                     let transactionId = params['transactionId'];
                     let paymentInfo = body;
 
-                    let checkoutSummary = await this.checkoutRepository.findByTransactionId(transactionId);
-
                     // call payment service
-                    paymentInfo!.transactionResponseBody = await this.paymentService.executePaymentRequest(paymentInfo!);
-                    checkoutSummary.paymentInfo = paymentInfo;
-                    checkoutSummary = await this.checkoutRepository.finalize(checkoutSummary);
+                    let plaftformResponse = (await this.paymentService.executePaymentRequest(paymentInfo!)).platformResponse;
+                    let checkoutSummary = await this.checkoutRepository.finalize(transactionId, plaftformResponse);
 
-                    // sends data to start the signatures
-                    let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
+                    // sends data to start processing the order
+                    // let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(checkoutSummary.shoppingCart);
 
                     return new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
                 } catch (error) {
+                    console.error(error);
                     return new APIResponse<CheckoutSummary>(false, 'INTERNAL_SERVER_ERROR');
                 }
             }

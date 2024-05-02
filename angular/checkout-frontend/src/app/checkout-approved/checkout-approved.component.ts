@@ -24,7 +24,10 @@ export class CheckoutApprovedComponent implements OnInit {
       this.payerId = params.get('PayerID')!;
       this.token = params.get('token')!;
 
-      this.paymentService.finalizePayment().subscribe({
+      this.paymentService.finalizePayment({
+        platformPaymentId: this.paymentId,
+        platormPayerId: this.payerId
+      }).subscribe({
         next: () => { this.router.navigate(['checkout-success']); },
         error: (error) => alert(error),
       });

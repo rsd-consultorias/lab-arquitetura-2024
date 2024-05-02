@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CheckoutSummary } from '../models/checkout-summary';
+import { PaymentInfo } from '../models/payment-info';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class PaymentService {
 
   private readonly API_URL = 'http://192.168.100.64:8080';
 
-  private static checkoutSummary: CheckoutSummary = {
+  checkoutSummary: CheckoutSummary = {
     buyerInfo: {
       firstName: "Fulano",
       lastName: "de Tal",
@@ -24,26 +25,26 @@ export class PaymentService {
       shoppingCartId: "",
       items: [
         {
-          "sku": "SKU1234",
-          "quantity": 1,
-          "price": 129.00,
-          "tax": 1,
-          "shipping": 0,
-          "insurance": 0,
-          "handlingFee": 0,
-          "shippingDiscount": 0,
-          "discount": 0,
-          "name": "Produto 1234",
-          "description": "Produto 1234 - XPTO - ABCD"
+          sku: "SKU1234",
+          quantity: 1,
+          price: 29.00,
+          tax: 1.54,
+          shipping: 10.34,
+          insurance: 0,
+          handlingFee: 0,
+          shippingDiscount: 3.05,
+          discount: 0,
+          name: "Produto 1234",
+          description: "Produto 1234 - XPTO - ABCD"
         },
         {
           sku: "SKU5678",
           quantity: 1,
-          price: 520.00,
+          price: 34.00,
           tax: 1,
           shipping: 0,
           insurance: 0,
-          handlingFee: 0,
+          handlingFee: 3.40,
           shippingDiscount: 0,
           discount: 0,
           name: "Produto 5678",
@@ -64,20 +65,22 @@ export class PaymentService {
   constructor(
     private httpClient: HttpClient) { }
 
-  updateCheckoutSummary(updateTo: CheckoutSummary): CheckoutSummary {
-    PaymentService.checkoutSummary = updateTo;
-    return PaymentService.checkoutSummary;
+  setCheckoutSummary(updateTo: CheckoutSummary): CheckoutSummary {
+    localStorage.setItem('checkout-summary', JSON.stringify(updateTo));
+    this.checkoutSummary = updateTo;
+    return updateTo;
   }
 
   getCheckoutSummary(): CheckoutSummary {
-    return PaymentService.checkoutSummary;
+    this.checkoutSummary = JSON.parse(localStorage.getItem('checkout-summary')!) as CheckoutSummary;
+    return this.checkoutSummary;
   }
 
   createOrder(): Observable<CheckoutSummary> {
-    return this.httpClient.post<CheckoutSummary>(`${this.API_URL}/v1/checkout/create`, PaymentService.checkoutSummary);
+    return this.httpClient.post<CheckoutSummary>(`${this.API_URL}/v1/checkout/create`, this.getCheckoutSummary());
   }
 
-  finalizePayment(): Observable<CheckoutSummary> {
-    return this.httpClient.post<CheckoutSummary>(`${this.API_URL}/v1/checkout/${PaymentService.checkoutSummary.transactionId}/finalize`, PaymentService.checkoutSummary.paymentInfo);
+  finalizePayment(paymentInfo: PaymentInfo): Observable<CheckoutSummary> {
+    return this.httpClient.post<CheckoutSummary>(`${this.API_URL}/v1/checkout/${this.getCheckoutSummary().transactionId}/finalize`, paymentInfo);
   }
 }

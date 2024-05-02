@@ -2,6 +2,7 @@ import { IPaymentService } from "../../core/services/payment-service.interface";
 import { Configuration } from "../../configuration";
 import { CheckoutSummary } from "../../core/models/checkout-summary";
 import { PaymentInfo } from "../../core/models/payment-info";
+import { PaymentPlatformReponse } from "src/core/dto/payment-platform-reponse.dto";
 
 export module PayPal {
     export module v1 {
@@ -9,32 +10,17 @@ export module PayPal {
 
             constructor() { }
 
-            async createPaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
+            async createPaymentRequest(checkoutSummary: CheckoutSummary): Promise<PaymentPlatformReponse> {
                 let newpaymentRequest = this.buildPayPalDTOFromCheckoutSummary(checkoutSummary);
-                let paymentResponse = await this._createPaymentRequest(newpaymentRequest);
+                let platformResponse = await this._createPaymentRequest(newpaymentRequest);
 
-                checkoutSummary.paymentInfo = {
-                    platformPaymentId: paymentResponse.id!,
-                    platormPayerId: paymentResponse.payer?.payer_info?.payer_id,
-                    paymentPlatform: 'paypal',
-                    transactionResponseBody: paymentResponse
-                }
-
-                return checkoutSummary;
+                return { checkoutSummary: checkoutSummary, platformResponse: platformResponse } as PaymentPlatformReponse;
             }
 
-            async updatePaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
-                throw new Error("Method not implemented.");
-            }
+            async executePaymentRequest(paymentInfo: PaymentInfo): Promise<PaymentPlatformReponse> {
+                let platformResponse = await this._executeOrder(paymentInfo.platformPaymentId!, paymentInfo.platormPayerId!);
 
-            async reviewPaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
-                throw new Error("Method not implemented.");
-            }
-
-            async executePaymentRequest(paymentInfo: PaymentInfo): Promise<any> {
-                let paymentResponse = await this._executeOrder(paymentInfo.platformPaymentId!, paymentInfo.platormPayerId!);
-
-                return paymentResponse;
+                return { paymentInfo: paymentInfo, platformResponse: platformResponse };
             }
 
             private buildPayPalDTOFromCheckoutSummary(checkoutSummary: CheckoutSummary): dto.PayPalDTO {
@@ -45,15 +31,6 @@ export module PayPal {
                 payPlaRequest.payer = {
                     payment_method: 'paypal',
                 };
-
-                try {
-                    payPlaRequest.payer = {
-                        payment_method: 'paypal',
-                        payer_info: {
-                            payer_id: checkoutSummary.paymentInfo!.transactionResponseBody ? ((checkoutSummary.paymentInfo!.transactionResponseBody) as dto.PayPalDTO).payer?.payer_info?.payer_id! : undefined
-                        }
-                    };
-                } catch (error) { }
 
                 payPlaRequest.transactions = [{
                     description: 'Compra loja de teste',
@@ -99,8 +76,8 @@ export module PayPal {
                 });
 
                 payPlaRequest.redirect_urls = {
-                    return_url: 'http://192.168.100.64:4200/checkout-approved',
-                    cancel_url: 'http://192.168.100.64:4200/checkout-canceled'
+                    return_url: Configuration.CHECKOUT_APPROVED_URL,
+                    cancel_url: Configuration.CHECKOUT_CANCELED_URL
                 }
 
                 return payPlaRequest;

@@ -1,8 +1,8 @@
-export class PaymentInfo { 
+export class PaymentInfo {
     public paymentPlatform?: string;
-    
+
     /** Platform payment id */
-    public platformPaymentId? : string;
+    public platformPaymentId?: string;
 
     /** Platform payer id */
     public platormPayerId?: string;
@@ -10,6 +10,6 @@ export class PaymentInfo {
     /** Platform token */
     public token?: string;
 
-    /** Persists the whole response from payment platform */
-    public transactionResponseBody?: any;
+    public approveUrl?: string;
+    public cancelUrl?: string;
 }
