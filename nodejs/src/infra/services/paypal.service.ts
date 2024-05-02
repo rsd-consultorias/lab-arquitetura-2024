@@ -20,6 +20,10 @@ export module PayPal {
             async executePaymentRequest(paymentInfo: PaymentInfo): Promise<PaymentPlatformReponse> {
                 let platformResponse = await this._executeOrder(paymentInfo.platformPaymentId!, paymentInfo.platormPayerId!);
 
+                if (platformResponse.state! !== 'approved') {
+                    platformResponse = await this._getOrderDetails(paymentInfo.platformPaymentId!);
+                }
+
                 return { paymentInfo: paymentInfo, platformResponse: platformResponse };
             }
 
@@ -100,6 +104,23 @@ export module PayPal {
 
             /**
              * 
+             * @param paymentId 
+             * @see https://api.sandbox.paypal.com/v1/payments/payment/:payID
+             */
+            private async _getOrderDetails(paymentId: string): Promise<dto.PayPalDTO> {
+                let accessToken = this.getAccessToken();
+                let request = await fetch(`${Configuration.PAYPAL_URL}/v1/payments/payment/${paymentId}`, {
+                    method: 'get',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+
+                return await request.json() as dto.PayPalDTO;
+            }
+
+            /**
+             * 
              * @param paymentRequest 
              * @returns 
              * @see https://developer.paypal.com/docs/regional/br/create-payment-request/
@@ -123,26 +144,6 @@ export module PayPal {
                 response = await request.json();
 
                 return response;
-            }
-
-            /**
-             * 
-             * @param paymentRequest 
-             * @returns 
-             * @see https://developer.paypal.com/docs/regional/br/update-selection-page/
-             */
-            private async _updatePaymentRequest(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
-                return {} as dto.PayPalDTO;
-            }
-
-            /**
-             * 
-             * @param paymentRequest 
-             * @returns 
-             * @see https://developer.paypal.com/docs/regional/br/order-review-page/
-             */
-            private async _reviewOrder(paymentRequest: dto.PayPalDTO): Promise<dto.PayPalDTO> {
-                return {} as dto.PayPalDTO;
             }
 
             /**

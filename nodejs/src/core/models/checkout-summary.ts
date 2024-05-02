@@ -4,8 +4,11 @@ import { PaymentInfo } from "./payment-info";
 import { ShoppingCart } from "./shopping-cart";
 
 export enum CheckoutState {
-    PENDING = 'PENDING',
     COMPLETED = 'COMPLETED',
+    DECLINED = 'DECLINED',
+    PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED',
+    PENDING = 'PENDING',
+    REFUNDED = 'REFUNDED',
     FAILED = 'FAILED'
 }
 

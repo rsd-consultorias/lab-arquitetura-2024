@@ -12,12 +12,15 @@ export class CheckoutRepository {
                 primaryKey: true
             },
             status: {
-                type: DataTypes.ENUM('PENDING', 'COMPLETED', 'FAILED'),
+                type: DataTypes.ENUM('COMPLETED', 'DECLINED', 'PARTIALLY_REFUNDED', 'PENDING', 'REFUNDED', 'FAILED'),
                 defaultValue: 'PENDING'
             },
             platform: {
                 type: DataTypes.STRING(10),
                 defaultValue: 'paypal-v1'
+            },
+            token: {
+                type: DataTypes.STRING(36)
             },
             checkout: {
                 type: DataTypes.JSON
@@ -33,14 +36,18 @@ export class CheckoutRepository {
     public async saveCreatedCheckout(checkoutSummary: CheckoutSummary, platformResponse: any): Promise<CheckoutSummary> {
         checkoutSummary.checkoutState = CheckoutState.PENDING;
 
+
         if (platformResponse.links) {
             checkoutSummary.paymentInfo = {
                 approveUrl: platformResponse.links.filter((item: { rel: string; }) => item.rel === 'approval_url').map((item: { href: any; }) => item.href)[0]
             }
         }
 
+        checkoutSummary.paymentInfo!.token! = platformResponse!.id;
+
         await this._repository.create({
             id: checkoutSummary.transactionId,
+            token: checkoutSummary.paymentInfo!.token,
             checkout: checkoutSummary,
             platformResponse: platformResponse
         });
@@ -58,6 +65,7 @@ export class CheckoutRepository {
         });
 
         checkoutSummary = found?.get('checkout') as CheckoutSummary;
+        checkoutSummary.checkoutState! = CheckoutState[found?.get('status')! as keyof typeof CheckoutState];
 
         return checkoutSummary;
     }
@@ -65,17 +73,30 @@ export class CheckoutRepository {
     public async finalize(transactionId: string, platformResponse: any): Promise<CheckoutSummary> {
         let found = await this._repository.findOne({
             where: {
-                id: transactionId
+                token: platformResponse.id
             }
         });
 
-        if (platformResponse.state) {
-            found?.set('status', platformResponse.state! === 'approved' ? CheckoutState.COMPLETED : CheckoutState.PENDING);
+        switch (platformResponse.state!) {
+            case 'approved': found!.set('status', CheckoutState.COMPLETED);
+                break;
+            case 'completed': found!.set('status', CheckoutState.COMPLETED);
+                break;
+            case 'refunded': found!.set('status', CheckoutState.REFUNDED);
+                break;
+            case 'partially_refunded': found!.set('status', CheckoutState.PARTIALLY_REFUNDED);
+                break;
+            case 'denied': found!.set('status', CheckoutState.DECLINED);
+                break;
+            default: found!.set('status', CheckoutState.PENDING);
+                break;
         }
 
-        found?.set('platformResponse', platformResponse);
+        found!.set('platformResponse', platformResponse);
 
-        let saved = await found?.save();
+        let saved = await found!.save({
+            fields: ['status', 'platformResponse']
+        });
 
         return saved?.get('checkout') as CheckoutSummary;
     }
