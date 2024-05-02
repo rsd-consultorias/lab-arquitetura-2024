@@ -26,7 +26,7 @@ export class CheckoutController {
             async (params: ParamsDictionary, body: CheckoutSummary) => {
                 try {
                     let checkoutSummary: CheckoutSummary = body;
-                    checkoutSummary.checkoutState = CheckoutState.CREATED;
+                    checkoutSummary.checkoutState = CheckoutState.PENDING;
                     let apiResponse = new APIResponse<CheckoutSummary>(true, undefined, checkoutSummary);
                     checkoutSummary.transactionId = randomUUID();
 

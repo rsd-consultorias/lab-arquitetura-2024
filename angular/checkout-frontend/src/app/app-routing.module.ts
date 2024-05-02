@@ -11,7 +11,8 @@ const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
   { path: 'checkout-approved', component: CheckoutApprovedComponent },
   { path: 'checkout-success', component: CheckoutSuccessComponent },
-  { path: 'checkout-canceled', component: CheckoutCanceledComponent }
+  { path: 'checkout-canceled', component: CheckoutCanceledComponent },
+  { path: '**', component: CatalogComponent }
 ];
 
 @NgModule({

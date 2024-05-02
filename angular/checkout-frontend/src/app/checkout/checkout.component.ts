@@ -20,6 +20,8 @@ export class CheckoutComponent implements OnInit {
   totalShippingDiscount?: number;
   totalHandlingFee?: number;
 
+  orderCreated = false;
+
   constructor(
     protected paymentService: PaymentService,
     private notificationService: NotificationService
@@ -39,12 +41,17 @@ export class CheckoutComponent implements OnInit {
   }
 
   createOrder() {
+    if (this.orderCreated) {
+      return;
+    }
+    
     this.notificationService.showSpinner();
     this.paymentService.createOrder().subscribe({
       next: (response: any) => {
         this.checkoutSummary = this.paymentService.setCheckoutSummary(response.body);
       },
       complete: () => {
+        this.orderCreated = true;
         this.notificationService.hideSpinner();
       }
     });

@@ -12,8 +12,12 @@ export class CheckoutRepository {
                 primaryKey: true
             },
             status: {
-                type: DataTypes.STRING,
-                defaultValue: 'CREATED'
+                type: DataTypes.ENUM('PENDING', 'COMPLETED', 'FAILED'),
+                defaultValue: 'PENDING'
+            },
+            platform: {
+                type: DataTypes.STRING(10),
+                defaultValue: 'paypal-v1'
             },
             checkout: {
                 type: DataTypes.JSON
@@ -27,7 +31,7 @@ export class CheckoutRepository {
     }
 
     public async saveCreatedCheckout(checkoutSummary: CheckoutSummary, platformResponse: any): Promise<CheckoutSummary> {
-        checkoutSummary.checkoutState = CheckoutState.CREATED;
+        checkoutSummary.checkoutState = CheckoutState.PENDING;
 
         if (platformResponse.links) {
             checkoutSummary.paymentInfo = {
@@ -65,10 +69,8 @@ export class CheckoutRepository {
             }
         });
 
-        if(platformResponse.state) {
-            let checkout = found?.get('checkout') as CheckoutSummary;
-            checkout.checkoutState = platformResponse.state === 'approved' ? CheckoutState.PAYMENT_ACCEPTED : CheckoutState.ACCEPTED;
-            found?.set('checkout', checkout);
+        if (platformResponse.state) {
+            found?.set('status', platformResponse.state! === 'approved' ? CheckoutState.COMPLETED : CheckoutState.PENDING);
         }
 
         found?.set('platformResponse', platformResponse);

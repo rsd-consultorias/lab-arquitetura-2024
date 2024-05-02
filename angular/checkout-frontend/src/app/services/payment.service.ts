@@ -27,7 +27,7 @@ export class PaymentService {
         {
           sku: "SKU1234",
           quantity: 1,
-          price: 29.00,
+          price: 19.30,
           tax: 1.54,
           shipping: 10.34,
           insurance: 0,
@@ -54,10 +54,10 @@ export class PaymentService {
     },
     shippingAddress: {
       postalCode: "09123456",
-      street: "Rua de teste, 404",
-      district: "Teste",
+      street: "Rua dos Testes, 404",
+      district: "Bairro de Teste",
       city: "Sao Paulo",
-      state: "Sap Paulo",
+      state: "Sao Paulo",
       countryCode: "BR"
     }
   };
