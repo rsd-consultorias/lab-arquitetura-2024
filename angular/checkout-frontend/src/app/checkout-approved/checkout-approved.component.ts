@@ -22,6 +22,8 @@ export class CheckoutApprovedComponent implements OnInit {
 
   ngOnInit(): void {
     this.activateRouter.queryParamMap.subscribe(params => {
+      this.notificationService.showSpinner();
+      
       this.paymentId = params.get('paymentId')!;
       this.payerId = params.get('PayerID')!;
       this.token = params.get('token')!;

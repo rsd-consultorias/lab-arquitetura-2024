@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CheckoutSummary } from '../models/checkout-summary';
+import { Transaction as Transaction } from '../models/transaction';
 import { PaymentInfo } from '../models/payment-info';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class PaymentService {
 
   private readonly API_URL = 'http://192.168.100.64:8080';
 
-  checkoutSummary: CheckoutSummary = {
+  transaction: Transaction = {
     buyerInfo: {
       firstName: "Fulano",
       lastName: "de Tal",
@@ -65,22 +65,22 @@ export class PaymentService {
   constructor(
     private httpClient: HttpClient) { }
 
-  setCheckoutSummary(updateTo: CheckoutSummary): CheckoutSummary {
-    localStorage.setItem('checkout-summary', JSON.stringify(updateTo));
-    this.checkoutSummary = updateTo;
+  setTransaction(updateTo: Transaction): Transaction {
+    localStorage.setItem('transaction-summary', JSON.stringify(updateTo));
+    this.transaction = updateTo;
     return updateTo;
   }
 
-  getCheckoutSummary(): CheckoutSummary {
-    this.checkoutSummary = JSON.parse(localStorage.getItem('checkout-summary')!) as CheckoutSummary;
-    return this.checkoutSummary;
+  getTransaction(): Transaction {
+    this.transaction = JSON.parse(localStorage.getItem('transaction-summary')!) as Transaction;
+    return this.transaction;
   }
 
-  createOrder(): Observable<CheckoutSummary> {
-    return this.httpClient.post<CheckoutSummary>(`${this.API_URL}/v1/checkout/create`, this.getCheckoutSummary());
+  createOrder(): Observable<Transaction> {
+    return this.httpClient.post<Transaction>(`${this.API_URL}/v1/transaction/create`, this.getTransaction());
   }
 
-  finalizePayment(paymentInfo: PaymentInfo): Observable<CheckoutSummary> {
-    return this.httpClient.post<CheckoutSummary>(`${this.API_URL}/v1/checkout/${this.getCheckoutSummary().transactionId}/finalize`, paymentInfo);
+  finalizePayment(paymentInfo: PaymentInfo): Observable<Transaction> {
+    return this.httpClient.post<Transaction>(`${this.API_URL}/v1/transaction/${this.getTransaction().paymentInfo?.token}/finalize`, paymentInfo);
   }
 }

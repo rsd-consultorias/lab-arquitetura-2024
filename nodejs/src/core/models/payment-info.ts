@@ -1,4 +1,8 @@
 export class PaymentInfo {
+
+    /** Transaction token */
+    public token?: string;
+
     public paymentPlatform?: string;
 
     /** Platform payment id */
@@ -8,7 +12,7 @@ export class PaymentInfo {
     public platormPayerId?: string;
 
     /** Platform token */
-    public token?: string;
+    public platformToken?: string;
 
     public approveUrl?: string;
     public cancelUrl?: string;

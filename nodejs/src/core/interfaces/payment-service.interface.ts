@@ -1,8 +1,8 @@
 import { PaymentPlatformReponse } from "../dto/payment-platform-reponse.dto";
-import { CheckoutSummary } from "../models/checkout-summary";
+import { Transaction } from "../models/transaction";
 import { PaymentInfo } from "../models/payment-info";
 
 export interface IPaymentService {
-    createPaymentRequest(checkoutSummary: CheckoutSummary): Promise<PaymentPlatformReponse>;
+    createPaymentRequest(transaction: Transaction): Promise<PaymentPlatformReponse>;
     executePaymentRequest(paymentInfo: PaymentInfo): Promise<PaymentPlatformReponse>;
 }

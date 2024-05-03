@@ -1,8 +1,19 @@
-import { CheckoutSummary } from "../models/checkout-summary";
+import { Transaction } from "../models/transaction";
 import { PaymentInfo } from "../models/payment-info";
 
-export interface PaymentPlatformReponse {
-    checkoutSummary?: CheckoutSummary;
+export class PaymentPlatformReponse {
+    transaction?: Transaction;
     paymentInfo?: PaymentInfo;
-    platformResponse?: any;
+    platformResponse?: PlatformResponse;
+}
+
+export class PlatformResponse {
+    id?: string;
+    links?: Link[];
+}
+
+export class Link {
+    href?: string;
+    rel?: string;
+    method?: string;
 }

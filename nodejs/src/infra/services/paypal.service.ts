@@ -1,8 +1,8 @@
 import { IPaymentService } from "../../core/interfaces/payment-service.interface";
 import { Configuration } from "../../configuration";
-import { CheckoutSummary } from "../../core/models/checkout-summary";
+import { Transaction } from "../../core/models/transaction";
 import { PaymentInfo } from "../../core/models/payment-info";
-import { PaymentPlatformReponse } from "src/core/dto/payment-platform-reponse.dto";
+import { PaymentPlatformReponse } from "../../core/dto/payment-platform-reponse.dto";
 
 export module PayPal {
     export module v1 {
@@ -10,11 +10,11 @@ export module PayPal {
 
             constructor() { }
 
-            async createPaymentRequest(checkoutSummary: CheckoutSummary): Promise<PaymentPlatformReponse> {
-                let newpaymentRequest = this.buildPayPalDTOFromCheckoutSummary(checkoutSummary);
+            async createPaymentRequest(transaction: Transaction): Promise<PaymentPlatformReponse> {
+                let newpaymentRequest = this.buildPayPalDTOFromTransaction(transaction);
                 let platformResponse = await this._createPaymentRequest(newpaymentRequest);
 
-                return { checkoutSummary: checkoutSummary, platformResponse: platformResponse } as PaymentPlatformReponse;
+                return { transaction: transaction, platformResponse: platformResponse } as PaymentPlatformReponse;
             }
 
             async executePaymentRequest(paymentInfo: PaymentInfo): Promise<PaymentPlatformReponse> {
@@ -27,47 +27,47 @@ export module PayPal {
                 return { paymentInfo: paymentInfo, platformResponse: platformResponse };
             }
 
-            private buildPayPalDTOFromCheckoutSummary(checkoutSummary: CheckoutSummary): dto.PayPalDTO {
-                let payPlaRequest: dto.PayPalDTO = {};
+            private buildPayPalDTOFromTransaction(transaction: Transaction): dto.PayPalDTO {
+                let payPalRequest: dto.PayPalDTO = {};
 
-                payPlaRequest.intent = 'sale';
+                payPalRequest.intent = 'sale';
 
-                payPlaRequest.payer = {
+                payPalRequest.payer = {
                     payment_method: 'paypal',
                 };
 
-                payPlaRequest.transactions = [{
+                payPalRequest.transactions = [{
                     description: 'Compra loja de teste',
-                    payment_options: { allowed_payment_method: 'IMMEDIATE_PAY' },
+                    payment_options: { allowed_payment_method: 'UNRESTRICTED' },
                     amount: {
-                        total: checkoutSummary.shoppingCart.items.map((i) => (i.price * i.quantity) + i.tax! + i.handlingFee! + i.insurance! + i.shipping! - i.shippingDiscount! - i.discount!).reduce((x, y) => x + y).toFixed(2),
+                        total: transaction.shoppingCart.items.map((i) => (i.price * i.quantity) + i.tax! + i.handlingFee! + i.insurance! + i.shipping! - i.shippingDiscount! - i.discount!).reduce((x, y) => x + y).toFixed(2),
                         currency: 'BRL',
                         details: {
-                            shipping: checkoutSummary.shoppingCart.items.map((i) => i.shipping!).reduce((x, y) => x + y).toFixed(2),
-                            subtotal: checkoutSummary.shoppingCart.items.map((i) => i.price! * i.quantity!).reduce((x, y) => x + y).toFixed(2),
-                            shipping_discount: checkoutSummary.shoppingCart.items.map((i) => i.shippingDiscount!).reduce((x, y) => x + y).toFixed(2),
-                            insurance: checkoutSummary.shoppingCart.items.map((i) => i.insurance!).reduce((x, y) => x + y).toFixed(2),
-                            handling_fee: checkoutSummary.shoppingCart.items.map((i) => i.handlingFee!).reduce((x, y) => x + y).toFixed(2),
-                            tax: checkoutSummary.shoppingCart.items.map((i) => i.tax!).reduce((x, y) => x + y).toFixed(2)
+                            shipping: transaction.shoppingCart.items.map((i) => i.shipping!).reduce((x, y) => x + y).toFixed(2),
+                            subtotal: transaction.shoppingCart.items.map((i) => i.price! * i.quantity!).reduce((x, y) => x + y).toFixed(2),
+                            shipping_discount: transaction.shoppingCart.items.map((i) => i.shippingDiscount!).reduce((x, y) => x + y).toFixed(2),
+                            insurance: transaction.shoppingCart.items.map((i) => i.insurance!).reduce((x, y) => x + y).toFixed(2),
+                            handling_fee: transaction.shoppingCart.items.map((i) => i.handlingFee!).reduce((x, y) => x + y).toFixed(2),
+                            tax: transaction.shoppingCart.items.map((i) => i.tax!).reduce((x, y) => x + y).toFixed(2)
                         }
                     },
                     item_list: {
                         shipping_address: {
                             recipient_name: '',
-                            line1: checkoutSummary.shippingAddress?.street,
-                            line2: checkoutSummary.shippingAddress?.district,
-                            city: checkoutSummary.shippingAddress?.city,
-                            country_code: checkoutSummary.shippingAddress?.countryCode,
-                            postal_code: checkoutSummary.shippingAddress?.postalCode,
-                            state: checkoutSummary.shippingAddress?.state,
-                            phone: checkoutSummary.buyerInfo?.phone
+                            line1: transaction.shippingAddress?.street,
+                            line2: transaction.shippingAddress?.district,
+                            city: transaction.shippingAddress?.city,
+                            country_code: transaction.shippingAddress?.countryCode,
+                            postal_code: transaction.shippingAddress?.postalCode,
+                            state: transaction.shippingAddress?.state,
+                            phone: transaction.buyerInfo?.phone
                         },
                         items: []
                     }
                 }];
 
-                checkoutSummary.shoppingCart.items.forEach(item => {
-                    payPlaRequest.transactions![0].item_list?.items?.push(
+                transaction.shoppingCart.items.forEach(item => {
+                    payPalRequest.transactions![0].item_list?.items?.push(
                         {
                             name: item.name!,
                             description: item.description!,
@@ -79,12 +79,12 @@ export module PayPal {
                         });
                 });
 
-                payPlaRequest.redirect_urls = {
-                    return_url: Configuration.CHECKOUT_APPROVED_URL,
-                    cancel_url: Configuration.CHECKOUT_CANCELED_URL
+                payPalRequest.redirect_urls = {
+                    return_url: Configuration.TRANSACTION_APPROVED_URL,
+                    cancel_url: Configuration.TRANSACTION_CANCELED_URL
                 }
 
-                return payPlaRequest;
+                return payPalRequest;
             }
 
             private async getAccessToken(): Promise<string> {
@@ -308,15 +308,15 @@ export module PayPal {
 
     export module v2 {
         export class PayPalService implements IPaymentService {
-            public async createPaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
+            public async createPaymentRequest(transaction: Transaction): Promise<Transaction> {
                 throw new Error("Method not implemented.");
             }
 
-            public async updatePaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
+            public async updatePaymentRequest(transaction: Transaction): Promise<Transaction> {
                 throw new Error("Method not implemented.");
             }
 
-            public async reviewPaymentRequest(checkoutSummary: CheckoutSummary): Promise<CheckoutSummary> {
+            public async reviewPaymentRequest(transaction: Transaction): Promise<Transaction> {
                 throw new Error("Method not implemented.");
             }
 

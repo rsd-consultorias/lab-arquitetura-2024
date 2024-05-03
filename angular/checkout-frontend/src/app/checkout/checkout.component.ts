@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PaymentService } from '../services/payment.service';
-import { CheckoutSummary } from '../models/checkout-summary';
+import { Transaction } from '../models/transaction';
 import { NotificationService } from '../services/notification.service';
 
 @Component({
@@ -10,7 +10,8 @@ import { NotificationService } from '../services/notification.service';
 })
 export class CheckoutComponent implements OnInit {
 
-  checkoutSummary?: CheckoutSummary;
+  transaction?: Transaction;
+
   totalPrice?: number;
   totalAmount?: number;
   totalDiscount?: number;
@@ -28,14 +29,14 @@ export class CheckoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.paymentService.setCheckoutSummary(this.paymentService.checkoutSummary);
-    this.checkoutSummary = this.paymentService.getCheckoutSummary();
-    this.totalPrice = this.checkoutSummary.shoppingCart?.items.map(item => item.price).reduce((previous, current) => current + previous);
-    this.totalDiscount = this.checkoutSummary.shoppingCart?.items.map(item => item.discount).reduce((previous, current) => current! + previous!);
-    this.totalTax = this.checkoutSummary.shoppingCart?.items.map(item => item.tax).reduce((previous, current) => current! + previous!);
-    this.totalShipping = this.checkoutSummary.shoppingCart?.items.map(item => item.shipping).reduce((previous, current) => current! + previous!);
-    this.totalShippingDiscount = this.checkoutSummary.shoppingCart?.items.map(item => item.shippingDiscount).reduce((previous, current) => current! + previous!);
-    this.totalHandlingFee = this.checkoutSummary.shoppingCart?.items.map(item => item.handlingFee).reduce((previous, current) => current! + previous!);
+    this.paymentService.setTransaction(this.paymentService.transaction);
+    this.transaction = this.paymentService.getTransaction();
+    this.totalPrice = this.transaction.shoppingCart?.items.map(item => item.price).reduce((previous, current) => current + previous);
+    this.totalDiscount = this.transaction.shoppingCart?.items.map(item => item.discount).reduce((previous, current) => current! + previous!);
+    this.totalTax = this.transaction.shoppingCart?.items.map(item => item.tax).reduce((previous, current) => current! + previous!);
+    this.totalShipping = this.transaction.shoppingCart?.items.map(item => item.shipping).reduce((previous, current) => current! + previous!);
+    this.totalShippingDiscount = this.transaction.shoppingCart?.items.map(item => item.shippingDiscount).reduce((previous, current) => current! + previous!);
+    this.totalHandlingFee = this.transaction.shoppingCart?.items.map(item => item.handlingFee).reduce((previous, current) => current! + previous!);
 
     this.totalAmount = this.totalPrice! - this.totalDiscount! + this.totalTax! + this.totalShipping! - this.totalShippingDiscount! + this.totalHandlingFee!;
   }
@@ -46,9 +47,10 @@ export class CheckoutComponent implements OnInit {
     }
     
     this.notificationService.showSpinner();
+    this.paymentService.setTransaction(this.transaction!);
     this.paymentService.createOrder().subscribe({
       next: (response: any) => {
-        this.checkoutSummary = this.paymentService.setCheckoutSummary(response.body);
+        this.transaction = this.paymentService.setTransaction(response.body);
       },
       complete: () => {
         this.orderCreated = true;
@@ -59,6 +61,6 @@ export class CheckoutComponent implements OnInit {
 
   requestApproval() {
     this.notificationService.showSpinner();
-    window.location.href = this.checkoutSummary?.paymentInfo?.approveUrl!;
+    window.location.href = this.transaction?.paymentInfo?.approveUrl!;
   }
 }

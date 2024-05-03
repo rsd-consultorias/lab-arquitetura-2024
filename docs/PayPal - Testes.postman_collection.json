@@ -148,7 +148,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/v1/checkout/create",
+					"raw": "http://localhost:8081/v1/transaction/create",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -156,7 +156,7 @@
 					"port": "8081",
 					"path": [
 						"v1",
-						"checkout",
+						"transaction",
 						"create"
 					]
 				}
@@ -184,7 +184,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/v1/checkout/91d01b0a-4022-402c-a66b-2a3ce637f174",
+					"raw": "http://localhost:8080/v1/transaction/91d01b0a-4022-402c-a66b-2a3ce637f174",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -192,7 +192,7 @@
 					"port": "8080",
 					"path": [
 						"v1",
-						"checkout",
+						"transaction",
 						"91d01b0a-4022-402c-a66b-2a3ce637f174"
 					]
 				}
