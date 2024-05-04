@@ -26,14 +26,15 @@ export class OrderRepository implements IOrderRepository {
             token: {
                 type: DataTypes.STRING(36)
             },
-            order: {
+            orderObject: {
                 type: DataTypes.JSON
             },
             platformResponse: {
                 type: DataTypes.JSON
             }
         }, {
-            paranoid: true
+            paranoid: true,
+            tableName: 'ORDRS0001'
         });
     }
 
@@ -49,7 +50,7 @@ export class OrderRepository implements IOrderRepository {
         await this.repository.create({
             id: randomUUID(),
             token: order.paymentInfo!.token,
-            transaction: order,
+            orderObject: order,
             platformResponse: paymentPlatformResponse
         });
 
@@ -65,7 +66,7 @@ export class OrderRepository implements IOrderRepository {
             }
         });
 
-        order = found?.get('order') as Order;
+        order = found?.get('orderObject') as Order;
         order.orderState! = OrderState[found?.get('status')! as keyof typeof OrderState];
 
         return order;
@@ -100,7 +101,7 @@ export class OrderRepository implements IOrderRepository {
             fields: ['status', 'platformResponse']
         });
 
-        let order = found?.get('order') as Order;
+        let order = saved?.get('orderObject') as Order;
         order.orderState! = OrderState[saved?.get('status')! as keyof typeof OrderState];
 
         return order;

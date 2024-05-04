@@ -66,21 +66,21 @@ export class PaymentService {
     private httpClient: HttpClient) { }
 
   setOrder(updateTo: Order): Order {
-    localStorage.setItem('transaction-summary', JSON.stringify(updateTo));
+    localStorage.setItem('order-summary', JSON.stringify(updateTo));
     this.order = updateTo;
     return updateTo;
   }
 
   getOrder(): Order {
-    this.order = JSON.parse(localStorage.getItem('transaction-summary')!) as Order;
+    this.order = JSON.parse(localStorage.getItem('order-summary')!) as Order;
     return this.order;
   }
 
   createOrder(): Observable<Order> {
-    return this.httpClient.post<Order>(`${this.API_URL}/v1/transaction/create`, this.getOrder());
+    return this.httpClient.post<Order>(`${this.API_URL}/v1/order/create`, this.getOrder());
   }
 
   finalizePayment(paymentInfo: PaymentInfo): Observable<Order> {
-    return this.httpClient.post<Order>(`${this.API_URL}/v1/transaction/${this.getOrder().paymentInfo?.token}/finalize`, paymentInfo);
+    return this.httpClient.post<Order>(`${this.API_URL}/v1/order/${this.getOrder().paymentInfo?.token}/finalize`, paymentInfo);
   }
 }

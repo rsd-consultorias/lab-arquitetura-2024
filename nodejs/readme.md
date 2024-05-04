@@ -1,5 +1,10 @@
 # NodeJS - Checkout flow
 
+## Classes
+
+![Classes](../docs/nodejs-classes.jpg)
+
+
 # References
 
 [The Checkout Flow](https://medium.com/@adriancostea/https-medium-com-adriancostea-checkout-flow-a9235926076b)
