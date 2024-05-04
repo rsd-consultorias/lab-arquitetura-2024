@@ -1,17 +1,20 @@
-import { Transaction } from "../models/transaction";
+import { Order } from "../models/order";
 import { PaymentInfo } from "../models/payment-info";
 
+/** DTO */
 export class PaymentPlatformReponse {
-    transaction?: Transaction;
+    order?: Order;
     paymentInfo?: PaymentInfo;
     platformResponse?: PlatformResponse;
 }
 
+/** DTO */
 export class PlatformResponse {
     id?: string;
-    links?: Link[];
+    links?: Array<Link>;
 }
 
+/** DTO */
 export class Link {
     href?: string;
     rel?: string;

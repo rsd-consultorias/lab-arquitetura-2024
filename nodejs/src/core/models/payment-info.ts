@@ -16,4 +16,5 @@ export class PaymentInfo {
 
     public approveUrl?: string;
     public cancelUrl?: string;
+    public refundUrl?: string;
 }

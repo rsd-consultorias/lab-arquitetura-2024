@@ -1,6 +1,6 @@
 import { IPaymentService } from "../../core/interfaces/payment-service.interface";
 import { Configuration } from "../../configuration";
-import { Transaction } from "../../core/models/transaction";
+import { Order } from "../../core/models/order";
 import { PaymentInfo } from "../../core/models/payment-info";
 import { PaymentPlatformReponse } from "../../core/dto/payment-platform-reponse.dto";
 
@@ -10,11 +10,11 @@ export module PayPal {
 
             constructor() { }
 
-            async createPaymentRequest(transaction: Transaction): Promise<PaymentPlatformReponse> {
-                let newpaymentRequest = this.buildPayPalDTOFromTransaction(transaction);
+            async createPaymentRequest(order: Order): Promise<PaymentPlatformReponse> {
+                let newpaymentRequest = this.buildPayPalDtoFromOrder(order);
                 let platformResponse = await this._createPaymentRequest(newpaymentRequest);
 
-                return { transaction: transaction, platformResponse: platformResponse } as PaymentPlatformReponse;
+                return { order: order, platformResponse: platformResponse } as PaymentPlatformReponse;
             }
 
             async executePaymentRequest(paymentInfo: PaymentInfo): Promise<PaymentPlatformReponse> {
@@ -27,7 +27,7 @@ export module PayPal {
                 return { paymentInfo: paymentInfo, platformResponse: platformResponse };
             }
 
-            private buildPayPalDTOFromTransaction(transaction: Transaction): dto.PayPalDTO {
+            private buildPayPalDtoFromOrder(order: Order): dto.PayPalDTO {
                 let payPalRequest: dto.PayPalDTO = {};
 
                 payPalRequest.intent = 'sale';
@@ -40,33 +40,33 @@ export module PayPal {
                     description: 'Compra loja de teste',
                     payment_options: { allowed_payment_method: 'UNRESTRICTED' },
                     amount: {
-                        total: transaction.shoppingCart.items.map((i) => (i.price * i.quantity) + i.tax! + i.handlingFee! + i.insurance! + i.shipping! - i.shippingDiscount! - i.discount!).reduce((x, y) => x + y).toFixed(2),
+                        total: order.shoppingCart.items.map((i) => (i.price * i.quantity) + i.tax! + i.handlingFee! + i.insurance! + i.shipping! - i.shippingDiscount! - i.discount!).reduce((x, y) => x + y).toFixed(2),
                         currency: 'BRL',
                         details: {
-                            shipping: transaction.shoppingCart.items.map((i) => i.shipping!).reduce((x, y) => x + y).toFixed(2),
-                            subtotal: transaction.shoppingCart.items.map((i) => i.price! * i.quantity!).reduce((x, y) => x + y).toFixed(2),
-                            shipping_discount: transaction.shoppingCart.items.map((i) => i.shippingDiscount!).reduce((x, y) => x + y).toFixed(2),
-                            insurance: transaction.shoppingCart.items.map((i) => i.insurance!).reduce((x, y) => x + y).toFixed(2),
-                            handling_fee: transaction.shoppingCart.items.map((i) => i.handlingFee!).reduce((x, y) => x + y).toFixed(2),
-                            tax: transaction.shoppingCart.items.map((i) => i.tax!).reduce((x, y) => x + y).toFixed(2)
+                            shipping: order.shoppingCart.items.map((i) => i.shipping!).reduce((x, y) => x + y).toFixed(2),
+                            subtotal: order.shoppingCart.items.map((i) => i.price! * i.quantity!).reduce((x, y) => x + y).toFixed(2),
+                            shipping_discount: order.shoppingCart.items.map((i) => i.shippingDiscount!).reduce((x, y) => x + y).toFixed(2),
+                            insurance: order.shoppingCart.items.map((i) => i.insurance!).reduce((x, y) => x + y).toFixed(2),
+                            handling_fee: order.shoppingCart.items.map((i) => i.handlingFee!).reduce((x, y) => x + y).toFixed(2),
+                            tax: order.shoppingCart.items.map((i) => i.tax!).reduce((x, y) => x + y).toFixed(2)
                         }
                     },
                     item_list: {
                         shipping_address: {
                             recipient_name: '',
-                            line1: transaction.shippingAddress?.street,
-                            line2: transaction.shippingAddress?.district,
-                            city: transaction.shippingAddress?.city,
-                            country_code: transaction.shippingAddress?.countryCode,
-                            postal_code: transaction.shippingAddress?.postalCode,
-                            state: transaction.shippingAddress?.state,
-                            phone: transaction.buyerInfo?.phone
+                            line1: order.shippingAddress?.street,
+                            line2: order.shippingAddress?.district,
+                            city: order.shippingAddress?.city,
+                            country_code: order.shippingAddress?.countryCode,
+                            postal_code: order.shippingAddress?.postalCode,
+                            state: order.shippingAddress?.state,
+                            phone: order.buyerInfo?.phone
                         },
                         items: []
                     }
                 }];
 
-                transaction.shoppingCart.items.forEach(item => {
+                order.shoppingCart.items.forEach(item => {
                     payPalRequest.transactions![0].item_list?.items?.push(
                         {
                             name: item.name!,
@@ -308,15 +308,15 @@ export module PayPal {
 
     export module v2 {
         export class PayPalService implements IPaymentService {
-            public async createPaymentRequest(transaction: Transaction): Promise<Transaction> {
+            public async createPaymentRequest(transaction: Order): Promise<Order> {
                 throw new Error("Method not implemented.");
             }
 
-            public async updatePaymentRequest(transaction: Transaction): Promise<Transaction> {
+            public async updatePaymentRequest(transaction: Order): Promise<Order> {
                 throw new Error("Method not implemented.");
             }
 
-            public async reviewPaymentRequest(transaction: Transaction): Promise<Transaction> {
+            public async reviewPaymentRequest(transaction: Order): Promise<Order> {
                 throw new Error("Method not implemented.");
             }
 

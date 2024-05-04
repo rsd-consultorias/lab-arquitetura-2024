@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize";
 import { Configuration } from "./configuration";
-import { TransactionController } from "./controllers/transaction.controller";
+import { OrderController } from "./controllers/order.controller";
 import { HttpServer } from "./infra/http-server";
 import { AccountQueueService } from "./infra/message-broker/account.queue";
 import { SubscriptionQueueService } from "./infra/message-broker/subscription.queue";
-import { TransactionRepository } from "./infra/repositories/transaction-repository";
+import { OrderRepository } from "./infra/repositories/order.repository";
 import { PayPal } from "./infra/services/paypal.service";
 
 export function initServer(port: number) {
@@ -17,10 +17,10 @@ export function initServer(port: number) {
 
     sequelize.sync();
 
-    const transactionRepository = new TransactionRepository(sequelize);
+    const orderRepository = new OrderRepository(sequelize);
     
-    new TransactionController(
-        transactionRepository, 
+    new OrderController(
+        orderRepository, 
         new AccountQueueService(),
         new SubscriptionQueueService(),
         new PayPal.v1.PayPalService(),

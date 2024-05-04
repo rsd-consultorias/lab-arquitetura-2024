@@ -4,6 +4,7 @@ export class BuyerInfo {
         public lastName: string,
         public birthDate: Date,
         public fiscalIdentificationNumber: string,
+        public token?: string,
         public email?: string,
         public phone?: string
     ) { }

@@ -1,3 +1,4 @@
+/** Value object */
 export class CartItem {
     constructor(
         public sku: string,

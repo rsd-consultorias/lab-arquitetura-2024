@@ -3,7 +3,7 @@ import { BuyerInfo } from "./buyer-info";
 import { PaymentInfo } from "./payment-info";
 import { ShoppingCart } from "./shopping-cart";
 
-export enum TransactionState {
+export enum OrderState {
     COMPLETED = 'COMPLETED',
     DECLINED = 'DECLINED',
     PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED',
@@ -12,11 +12,11 @@ export enum TransactionState {
     FAILED = 'FAILED'
 }
 
-export class Transaction {
+export class Order {
     public buyerInfo?: BuyerInfo;
     public total?: number;
     public currency?: string;
-    public transactionState?: TransactionState;
+    public orderState?: OrderState;
 
     constructor(
         public shoppingCart?: ShoppingCart,

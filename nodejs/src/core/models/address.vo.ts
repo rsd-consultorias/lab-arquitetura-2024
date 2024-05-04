@@ -1,3 +1,4 @@
+/** Value object */
 export class Address {
     constructor(
         public postalCode: string,

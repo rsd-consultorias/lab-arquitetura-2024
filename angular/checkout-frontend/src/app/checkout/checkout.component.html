@@ -2,18 +2,18 @@
     <mat-step>
         <div>
             <ol>
-                <li *ngFor="let item of transaction?.shoppingCart?.items">
+                <li *ngFor="let item of order?.shoppingCart?.items">
                     <p>
                         <b>{{item.name}} (x {{item.quantity}} un.)</b><br />
                         {{item.description}}<br />
                         SKU: {{item.sku}}<br />
                         <span style="color: green; font-weight: bold;">{{item.price |
-                            currency:transaction?.currency}}</span>
+                            currency:order?.currency}}</span>
                     </p>
                 </li>
             </ol>
             <br />
-            <span style="color: green; font-weight: bold">Total: {{totalPrice | currency:transaction?.currency}}</span>
+            <span style="color: green; font-weight: bold">Total: {{totalPrice | currency:order?.currency}}</span>
         </div>
         <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
             <button mat-flat-button matStepperNext class="center" color="primary" style="width: 80%;">Continue</button>
@@ -23,23 +23,23 @@
         <div>
             <mat-form-field style="width: 100%;">
                 <mat-label>Nome</mat-label>
-                <input matInput [(ngModel)]="transaction!.buyerInfo!.firstName">
+                <input matInput [(ngModel)]="order!.buyerInfo!.firstName">
             </mat-form-field>
             <mat-form-field style="width: 100%;">
                 <mat-label>Sobrenome</mat-label>
-                <input matInput [(ngModel)]="transaction!.buyerInfo!.lastName">
+                <input matInput [(ngModel)]="order!.buyerInfo!.lastName">
             </mat-form-field>
             <mat-form-field style="width: 100%;">
                 <mat-label>CPF</mat-label>
-                <input matInput [(ngModel)]="transaction!.buyerInfo!.fiscalIdentificationNumber">
+                <input matInput [(ngModel)]="order!.buyerInfo!.fiscalIdentificationNumber">
             </mat-form-field>
             <mat-form-field style="width: 100%;">
                 <mat-label>e-mail</mat-label>
-                <input matInput [(ngModel)]="transaction!.buyerInfo!.email">
+                <input matInput [(ngModel)]="order!.buyerInfo!.email">
             </mat-form-field>
             <mat-form-field style="width: 100%;">
                 <mat-label>Fone</mat-label>
-                <input matInput [(ngModel)]="transaction!.buyerInfo!.phone">
+                <input matInput [(ngModel)]="order!.buyerInfo!.phone">
             </mat-form-field>
 
         </div>
@@ -50,23 +50,23 @@
     <mat-step>
         <mat-form-field style="width: 100%;">
             <mat-label>Rua</mat-label>
-            <input matInput [(ngModel)]="transaction!.shippingAddress!.street">
+            <input matInput [(ngModel)]="order!.shippingAddress!.street">
         </mat-form-field>
         <mat-form-field style="width: 100%;">
             <mat-label>Bairro</mat-label>
-            <input matInput [(ngModel)]="transaction!.shippingAddress!.district">
+            <input matInput [(ngModel)]="order!.shippingAddress!.district">
         </mat-form-field>
         <mat-form-field style="width: 100%;">
             <mat-label>Cidade</mat-label>
-            <input matInput [(ngModel)]="transaction!.shippingAddress!.city">
+            <input matInput [(ngModel)]="order!.shippingAddress!.city">
         </mat-form-field>
         <mat-form-field style="width: 100%;">
             <mat-label>Estado</mat-label>
-            <input matInput [(ngModel)]="transaction!.shippingAddress!.state">
+            <input matInput [(ngModel)]="order!.shippingAddress!.state">
         </mat-form-field>
         <mat-form-field style="width: 100%;">
             <mat-label>CEP</mat-label>
-            <input matInput [(ngModel)]="transaction!.shippingAddress!.postalCode">
+            <input matInput [(ngModel)]="order!.shippingAddress!.postalCode">
         </mat-form-field>
 
         <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
@@ -75,19 +75,19 @@
         </div>
     </mat-step>
     <mat-step>
-        <span style="color: green;">Valor: {{totalPrice | currency:transaction?.currency}}<br /></span>
+        <span style="color: green;">Valor: {{totalPrice | currency:order?.currency}}<br /></span>
         <span *ngIf="totalDiscount! > 0" style="color: green;">Desconto: {{-totalDiscount! |
-            currency:transaction?.currency}}<br /></span>
+            currency:order?.currency}}<br /></span>
         <span *ngIf="totalTax! > 0" style="color: green;">Imposto: {{totalTax! |
-            currency:transaction?.currency}}<br /></span>
+            currency:order?.currency}}<br /></span>
         <span *ngIf="totalShipping! > 0" style="color: green;">Frete: {{totalShipping |
-            currency:transaction?.currency}}<br /></span>
+            currency:order?.currency}}<br /></span>
         <span *ngIf="totalShippingDiscount! > 0" style="color: green;">Desconto no Frete: {{-totalShippingDiscount! |
-            currency:transaction?.currency}}<br /></span>
+            currency:order?.currency}}<br /></span>
         <span *ngIf="totalHandlingFee! > 0" style="color: green;">Taxa de Manuseio: {{totalHandlingFee |
-            currency:transaction?.currency}}<br /></span>
+            currency:order?.currency}}<br /></span>
         <span style="color: green; font-weight: bold"><br />Total: {{totalAmount |
-            currency:transaction?.currency}}</span>
+            currency:order?.currency}}</span>
 
         <div style="width: 100vw; height: 56px; position: fixed; left: 0; bottom: 0; margin: auto; text-align: center;">
             <button mat-flat-button class="center" color="primary" style="width: 80%;"

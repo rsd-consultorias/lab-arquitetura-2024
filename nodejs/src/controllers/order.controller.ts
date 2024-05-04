@@ -1,57 +1,57 @@
 import { ParamsDictionary } from "express-serve-static-core";
-import { Transaction } from "../core/models/transaction";
+import { Order } from "../core/models/order";
 import { IPaymentService } from "../core/interfaces/payment-service.interface";
 import { PaymentInfo } from "../core/models/payment-info";
 import { IHttpServer } from "../infra/http-server";
 import { APIResponse } from "../view-models/api-response";
 import { AccountQueueService } from "../infra/message-broker/account.queue";
 import { SubscriptionQueueService } from "../infra/message-broker/subscription.queue";
-import { TransactionService } from "../core/services/transaction.service";
-import { ITransactionRepository } from "../core/interfaces/transaction-repository.interface";
+import { OrderService } from "../core/services/order.service";
+import { IOrderRepository } from "../core/interfaces/order.repository.interface";
 
-const TRANSACTION_URL_API = '/v1/transaction';
+const CONTROLLER_URL = '/v1/order';
 
-export class TransactionController {
+export class OrderController {
 
     constructor(
-        private transactionRepository: ITransactionRepository,
+        private orderRepository: IOrderRepository,
         private accountQueue: AccountQueueService,
         private subscriptionQueue: SubscriptionQueueService,
         private paymentService: IPaymentService,
         private httpServer: IHttpServer) {
 
-        let transactionService = new TransactionService(paymentService, transactionRepository);
+        let orderService = new OrderService(paymentService, orderRepository);
 
-        // INFO: creates transaction
-        httpServer.register(`${TRANSACTION_URL_API}/create`, 'post',
-            async (params: ParamsDictionary, body: Transaction) => {
+        // INFO: creates order
+        httpServer.register(`${CONTROLLER_URL}/create`, 'post',
+            async (params: ParamsDictionary, body: Order) => {
                 try {
-                    let transaction: Transaction = body;
-                    transaction = await transactionService.createOrder(transaction);
+                    let order: Order = body;
+                    order = await orderService.createOrder(order);
 
-                    return new APIResponse<Transaction>(true, undefined, transaction);
+                    return new APIResponse<Order>(true, undefined, order);
                 } catch (error) {
                     console.error(error);
-                    return new APIResponse<Transaction>(false, 'INTERNAL_SERVER_ERROR');
+                    return new APIResponse<Order>(false, 'INTERNAL_SERVER_ERROR');
                 }
             });
 
-        // INFO: lists transaction details
-        httpServer.register(`${TRANSACTION_URL_API}/:token`, 'get',
+        // INFO: lists order details
+        httpServer.register(`${CONTROLLER_URL}/:token`, 'get',
             async (params: ParamsDictionary) => {
                 try {
                     let token = params['token'];
-                    let transaction = await this.transactionRepository.findByToken(token);
+                    let order = await this.orderRepository.findByToken(token);
 
-                    return new APIResponse<Transaction>(true, undefined, transaction);
+                    return new APIResponse<Order>(true, undefined, order);
                 } catch (error) {
                     console.error(error);
-                    return new APIResponse<Transaction>(false, 'INTERNAL_SERVER_ERROR');
+                    return new APIResponse<Order>(false, 'INTERNAL_SERVER_ERROR');
                 }
             });
 
-        // INFO: finalizes transaction
-        httpServer.register(`${TRANSACTION_URL_API}/:token/finalize`, 'post',
+        // INFO: finalizes order
+        httpServer.register(`${CONTROLLER_URL}/:token/finalize`, 'post',
             async (params: ParamsDictionary, body: PaymentInfo) => {
                 try {
                     let token = params['token'];
@@ -59,15 +59,15 @@ export class TransactionController {
 
                     // call payment service
                     let plaftformResponse = (await this.paymentService.executePaymentRequest(paymentInfo!));
-                    let transaction = await this.transactionRepository.finalize(token, plaftformResponse);
+                    let order = await this.orderRepository.finalize(token, plaftformResponse);
 
                     // sends data to start processing the order
                     // let subscriptionReponse = await this.subscriptionQueue.sendShoppingCartToFinalizeSubscription(transaction.shoppingCart);
 
-                    return new APIResponse<Transaction>(true, undefined, transaction);
+                    return new APIResponse<Order>(true, undefined, order);
                 } catch (error) {
                     console.error(error);
-                    return new APIResponse<Transaction>(false, 'INTERNAL_SERVER_ERROR');
+                    return new APIResponse<Order>(false, 'INTERNAL_SERVER_ERROR');
                 }
             }
         );

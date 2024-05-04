@@ -1,8 +1,8 @@
-import { CartItem } from "./cart-item";
+import { CartItem } from "./cart-item.vo";
 
 export class ShoppingCart {
     constructor(
-        public shoppingCartId: string,
+        public id: string,
         public items: Array<CartItem>
     ) { }
 }

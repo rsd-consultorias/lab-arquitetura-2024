@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Transaction as Transaction } from '../models/transaction';
+import { Order } from '../models/order';
 import { PaymentInfo } from '../models/payment-info';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class PaymentService {
 
   private readonly API_URL = 'http://192.168.100.64:8080';
 
-  transaction: Transaction = {
+  order: Order = {
     buyerInfo: {
       firstName: "Fulano",
       lastName: "de Tal",
@@ -65,22 +65,22 @@ export class PaymentService {
   constructor(
     private httpClient: HttpClient) { }
 
-  setTransaction(updateTo: Transaction): Transaction {
+  setOrder(updateTo: Order): Order {
     localStorage.setItem('transaction-summary', JSON.stringify(updateTo));
-    this.transaction = updateTo;
+    this.order = updateTo;
     return updateTo;
   }
 
-  getTransaction(): Transaction {
-    this.transaction = JSON.parse(localStorage.getItem('transaction-summary')!) as Transaction;
-    return this.transaction;
+  getOrder(): Order {
+    this.order = JSON.parse(localStorage.getItem('transaction-summary')!) as Order;
+    return this.order;
   }
 
-  createOrder(): Observable<Transaction> {
-    return this.httpClient.post<Transaction>(`${this.API_URL}/v1/transaction/create`, this.getTransaction());
+  createOrder(): Observable<Order> {
+    return this.httpClient.post<Order>(`${this.API_URL}/v1/transaction/create`, this.getOrder());
   }
 
-  finalizePayment(paymentInfo: PaymentInfo): Observable<Transaction> {
-    return this.httpClient.post<Transaction>(`${this.API_URL}/v1/transaction/${this.getTransaction().paymentInfo?.token}/finalize`, paymentInfo);
+  finalizePayment(paymentInfo: PaymentInfo): Observable<Order> {
+    return this.httpClient.post<Order>(`${this.API_URL}/v1/transaction/${this.getOrder().paymentInfo?.token}/finalize`, paymentInfo);
   }
 }
