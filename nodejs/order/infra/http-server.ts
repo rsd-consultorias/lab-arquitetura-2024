@@ -1,5 +1,6 @@
 import cors from "cors";
 import express, { Request, Response } from "express";
+import path from "path";
 
 export interface IHttpServer {
     register(url: string, method: string, callback: Function): Promise<void>;
@@ -9,7 +10,7 @@ export interface IHttpServer {
 export class HttpServer implements IHttpServer {
     app: any;
 
-    constructor() {
+    constructor(private rootDir: string) {
         const corsOptions = {
             origin: [
                 'http://localhost:4200',
@@ -22,6 +23,8 @@ export class HttpServer implements IHttpServer {
         this.app.use(express.json({ limit: '1mb' }));
         this.app.use(express.urlencoded({ limit: '1mb', extended: true }));
         this.app.set('trust proxy', true);
+        this.app.use('/docs', express.static(path.join(this.rootDir, 'docs')));
+        console.log(path.join(this.rootDir, 'docs'));
     }
 
     async register(url: string, method: string, callback: Function): Promise<void> {

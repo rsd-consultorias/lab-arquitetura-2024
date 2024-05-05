@@ -9,7 +9,7 @@ import { SubscriptionQueueService } from "../infra/message-broker/subscription.q
 import { OrderService } from "../core/services/order.service";
 import { IOrderRepository } from "../core/interfaces/order.repository.interface";
 
-const CONTROLLER_URL = '/v1/order';
+const CONTROLLER_URL = '/v1';
 
 export class OrderController {
 
@@ -23,7 +23,7 @@ export class OrderController {
         let orderService = new OrderService(paymentService, orderRepository);
 
         // INFO: creates order
-        httpServer.register(`${CONTROLLER_URL}/create`, 'post',
+        httpServer.register(`${CONTROLLER_URL}`, 'post',
             async (params: ParamsDictionary, body: Order) => {
                 try {
                     let order: Order = body;

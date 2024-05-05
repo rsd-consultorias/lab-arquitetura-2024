@@ -1,0 +1,90 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Order API
+  description: APT to create and cancel orders
+  contact:
+    name: RSD Consultoria
+    email: developer@rsdconsultoria.com.br
+    url: https://rsdconsultoria.com.br
+  license:
+    name: MIT License
+    url: https://opensource.org/license/mit
+servers:
+  - url: http://192.168.100.64:8080/v1
+paths:
+  /:
+    post:
+      operationId: createOrder
+      description: Create a new order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequest"
+      responses:
+        "202":
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderRequest"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /{token}/finalize:
+    post:
+      operationId: finalizeOrder
+      description: Finalizes an order
+      parameters:
+        - name: token
+          in: path
+          description: Token to localize the order
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentInfo"
+      responses:
+        "200":
+          description: Order finalized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderRequest"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    OrderRequest:
+      allOf:
+        - $ref: "#/components/schemas/OrderRequest"
+        - type: object
+    PaymentInfo:
+      allOf:
+        - $ref: "#/components/schemas/PaymentInfo"
+        - type: object
+          properties:
+            platformPaymentId:
+              type: string
+            platormPayerId:
+              type: string
+    ErrorResponse:
+      allOf:
+        - $ref: "#/components/schemas/ErrorResponse"
+        - type: object
+          properties:
+            statuscode:
+              type: string
+            message:
+              type: string

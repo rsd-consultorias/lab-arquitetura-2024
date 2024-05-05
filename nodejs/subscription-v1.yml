@@ -1,0 +1,154 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Subscription API
+  description: API to create and cancel subscriptions
+  contact:
+    name: RSD Consultoria
+    email: developer@rsdconsultoria.com.br
+    url: https://rsdconsultoria.com.br
+  license:
+    name: MIT License
+    url: https://opensource.org/license/mit
+servers:
+  - url: http://192.168.100.64:8081/v1
+paths:
+  /{token}:
+    get:
+      operationId: getSubscriptionDetails
+      description: get subscription details
+      parameters:
+        - name: token
+          in: path
+          description: Token to localize the subscription
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Subscription found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionResponse"
+        default:
+          description: Subscription not found or errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateSubscription
+      description: Updates a subscription
+      parameters:
+        - name: token
+          in: path
+          description: Token to localize the subscription
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriptionRequest"
+      responses:
+        "201":
+          description: Subscription updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionResponse"
+        default:
+          description: Subscription not found or errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: cancelSubscription
+      description: Cancels a subscription
+      parameters:
+        - name: token
+          in: path
+          description: Token to localize the subscription
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriptionRequest"
+      responses:
+        "201":
+          description: Subscription canceled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionResponse"
+        default:
+          description: Subscription not found or errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /:
+    post:
+      operationId: createNewSubscritption
+      description: create new subscritption
+      requestBody:
+        description: body containing the subscription object to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriptionRequest"
+      responses:
+        "200":
+          description: Subscription created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionResponse"
+        default:
+          description: Subscription not found or errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    SubscriptionRequest:
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionRequest"
+        - type: object
+          properties:
+            planToken:
+              type: string
+            paymentInfo:
+              type: object
+              properties:
+                paymentPlatform:
+                  type: string
+    SubscriptionResponse:
+      allOf:
+        - $ref: "#/components/schemas/SubscriptionResponse"
+        - type: object
+          properties:
+            planToken:
+              type: string
+            paymentInfo:
+              type: object
+              properties:
+                paymentPlatform:
+                  type: string
+    ErrorResponse:
+      allOf:
+        - $ref: "#/components/schemas/ErrorResponse"
+        - type: object
+          properties:
+            statuscode:
+              type: string
+            message:
+              type: string

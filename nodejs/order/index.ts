@@ -8,7 +8,7 @@ import { OrderRepository } from "./infra/repositories/order.repository";
 import { PayPal } from "./infra/services/paypal.service";
 
 export function initServer(port: number) {
-    const httpServer = new HttpServer();
+    const httpServer = new HttpServer(__dirname);
     const sequelize = new Sequelize({
         dialect: 'sqlite',
         storage: '../.data/cache-transactions-db',

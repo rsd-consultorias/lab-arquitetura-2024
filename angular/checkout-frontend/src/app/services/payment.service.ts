@@ -28,8 +28,8 @@ export class PaymentService {
           sku: "SKU1234",
           quantity: 1,
           price: 19.30,
-          tax: 1.54,
-          shipping: 10.34,
+          tax: 1.89,
+          shipping: 5,
           insurance: 0,
           handlingFee: 0,
           shippingDiscount: 3.05,
@@ -40,11 +40,11 @@ export class PaymentService {
         {
           sku: "SKU5678",
           quantity: 1,
-          price: 34.00,
-          tax: 1,
-          shipping: 0,
+          price: 14.00,
+          tax: 1.54,
+          shipping: 5,
           insurance: 0,
-          handlingFee: 3.40,
+          handlingFee: 0,
           shippingDiscount: 0,
           discount: 0,
           name: "Produto 5678",
@@ -77,10 +77,10 @@ export class PaymentService {
   }
 
   createOrder(): Observable<Order> {
-    return this.httpClient.post<Order>(`${this.API_URL}/v1/order/create`, this.getOrder());
+    return this.httpClient.post<Order>(`${this.API_URL}/v1/create`, this.getOrder());
   }
 
   finalizePayment(paymentInfo: PaymentInfo): Observable<Order> {
-    return this.httpClient.post<Order>(`${this.API_URL}/v1/order/${this.getOrder().paymentInfo?.token}/finalize`, paymentInfo);
+    return this.httpClient.post<Order>(`${this.API_URL}/v1/${this.getOrder().paymentInfo?.token}/finalize`, paymentInfo);
   }
 }

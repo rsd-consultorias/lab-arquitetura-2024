@@ -4,6 +4,25 @@
 
 ![Classes](../docs/nodejs-classes.jpg)
 
+## API First
+
+```bash
+# Build the project
+clear && npm run build
+
+# Generates API doc from yml definition
+npx openapi-generator-cli generate -i subscription-v1.yml -g openapi -o dist/subscription/docs
+npx openapi-generator-cli generate -i subscription-v1.yml -g html -o dist/subscription/docs
+
+npx openapi-generator-cli generate -i order-v1.yml -g openapi -o dist/order/docs
+npx openapi-generator-cli generate -i order-v1.yml -g html -o dist/order/docs
+
+# Run API
+node dist/order/index.js
+node dist/subscription/index.js
+```
+
+
 
 # References
 
