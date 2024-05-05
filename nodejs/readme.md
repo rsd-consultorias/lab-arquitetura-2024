@@ -18,8 +18,7 @@ npx openapi-generator-cli generate -i order-v1.yml -g openapi -o dist/order/docs
 npx openapi-generator-cli generate -i order-v1.yml -g html -o dist/order/docs
 
 # Run API
-node dist/order/index.js
-node dist/subscription/index.js
+SERVER_PORT=8080 node dist/order/index.js | SERVER_PORT=8081 node dist/subscription/index.js
 ```
 
 
