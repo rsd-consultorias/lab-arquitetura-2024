@@ -77,7 +77,7 @@ export class PaymentService {
   }
 
   createOrder(): Observable<Order> {
-    return this.httpClient.post<Order>(`${this.API_URL}/v1/create`, this.getOrder());
+    return this.httpClient.post<Order>(`${this.API_URL}/v1/`, this.getOrder());
   }
 
   finalizePayment(paymentInfo: PaymentInfo): Observable<Order> {

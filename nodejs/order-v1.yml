@@ -14,6 +14,29 @@ servers:
   - url: http://192.168.100.64:8080/v1
 paths:
   /:
+    get:
+      operationId: getOrder
+      description: Get details of an order
+      parameters:
+        - name: token
+          in: path
+          description: Token to localize the order
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Order found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createOrder
       description: Create a new order
@@ -28,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrderRequest"
+                $ref: "#/components/schemas/OrderResponse"
         default:
           description: Error response
           content:
@@ -57,7 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrderRequest"
+                $ref: "#/components/schemas/OrderResponse"
         default:
           description: Error response
           content:
@@ -69,6 +92,10 @@ components:
     OrderRequest:
       allOf:
         - $ref: "#/components/schemas/OrderRequest"
+        - type: object
+    OrderResponse:
+      allOf:
+        - $ref: "#/components/schemas/OrderResponse"
         - type: object
     PaymentInfo:
       allOf:
