@@ -8,7 +8,6 @@ Antes de iniciar o desenvolvimento deve-se elaborar e garantir que todos tenham 
 
 ![Visão Geral](docs/c4-model.jpg)
 
-
 ### Arquitetura de Software
 
 Deverá já ter definido o desenho conceitual que será adotado para o desenvolvimento. O entendimento do modelo deve estar claro para todo o time.
@@ -23,7 +22,7 @@ Caso houver necessidade de mais detalhes para entender o modelo, deverá ser dis
 
 [Referência](https://learn.microsoft.com/pt-br/dotnet/architecture/microservices/multi-container-microservice-net-applications/implement-api-gateways-with-ocelot)
 
-## Planejamento e Controle do Ciclo de Desenvolvimento
+<!-- ## Planejamento e Controle do Ciclo de Desenvolvimento
 
 Cada ciclo de desenvolvimento deverá ser planejado e acordado com todos as datas de término e devem ser definido milestones para que incrementos funcionais sejam entregues afim de dar subsídio para que tarefas dependentes possam ser programadas com antecedência.
 
@@ -86,7 +85,7 @@ Cada ciclo de desenvolvimento deverá ser planejado e acordado com todos as data
 > Atividades necessárias para persistência dos dados no banco de dados e implementação dos repositórios exigidos pela service.
 
 ### Implementação da infra
-> Atividades necessárias para atender o desenvolvimento dos serviços externos à aplicação que são exigidos para atender os casos de uso da service.
+> Atividades necessárias para atender o desenvolvimento dos serviços externos à aplicação que são exigidos para atender os casos de uso da service. -->
 
 ## Referências
 [1] Gráfico de burndown: https://kickoff.pmi.org/app/getting-the-work-done/measure-project-success/3
