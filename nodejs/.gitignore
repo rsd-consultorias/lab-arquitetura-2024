@@ -60,6 +60,7 @@ typings/
 # build directories
 build/
 dist/
+.dist/
 
 # sqlite file
 labdb

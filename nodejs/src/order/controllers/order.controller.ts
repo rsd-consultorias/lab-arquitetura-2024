@@ -1,13 +1,13 @@
 import { ParamsDictionary } from "express-serve-static-core";
-import { Order } from "../core/models/order";
-import { IPaymentService } from "../core/interfaces/payment-service.interface";
-import { PaymentInfo } from "../core/models/payment-info";
+import { Order } from "../../core/models/order";
+import { IPaymentService } from "../../core/interfaces/payment-service.interface";
+import { PaymentInfo } from "../../core/models/payment-info";
 import { IHttpServer } from "../infra/http-server";
 import { APIResponse } from "../view-models/api-response";
-import { AccountQueueService } from "../infra/message-broker/account.queue";
-import { SubscriptionQueueService } from "../infra/message-broker/subscription.queue";
-import { OrderService } from "../core/services/order.service";
-import { IOrderRepository } from "../core/interfaces/order.repository.interface";
+import { AccountQueueService } from "../infra/message-broker/account-queue.service";
+import { InvoicingQueueService } from "../infra/message-broker/invoicing-queue.service";
+import { OrderService } from "../../core/services/order.service";
+import { IOrderRepository } from "../../core/interfaces/order.repository.interface";
 
 const CONTROLLER_URL = '/v1';
 
@@ -16,7 +16,7 @@ export class OrderController {
     constructor(
         private orderRepository: IOrderRepository,
         private accountQueue: AccountQueueService,
-        private subscriptionQueue: SubscriptionQueueService,
+        private subscriptionQueue: InvoicingQueueService,
         private paymentService: IPaymentService,
         private httpServer: IHttpServer) {
 

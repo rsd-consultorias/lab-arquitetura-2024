@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc --target ES5 --experimentalDecorators --declaration",
         "lint": "tslint --project tsconfig.json -c tslint.json 'src/**/*.ts'",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest --coverage"
     },
     "author": "",
     "license": "ISC",
@@ -22,12 +22,18 @@
         "express": "^4.17.1",
         "sequelize": "^6.37.3",
         "sqlite3": "^5.1.7",
-        "tslib": "^2.3.0",
-        "tslint": "^6.1.3",
-        "typedoc": "^0.23.6",
         "uuid": "^8.3.2"
     },
     "devDependencies": {
-        "@openapitools/openapi-generator-cli": "^2.13.4"
+        "@jest/globals": "^29.7.0",
+        "@openapitools/openapi-generator-cli": "^2.13.4",
+        "@types/jest": "^29.5.12",
+        "jest": "^29.7.0",
+        "ts-jest": "^29.1.2",
+        "ts-node": "^10.9.2",
+        "tslib": "^2.6.2",
+        "tslint": "^6.1.3",
+        "typedoc": "^0.25.13",
+        "typescript": "^5.4.5"
     }
 }

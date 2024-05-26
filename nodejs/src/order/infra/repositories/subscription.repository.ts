@@ -1,6 +1,6 @@
 import { DataTypes, Model, ModelStatic, Sequelize } from "sequelize";
-import { Subscription } from "../../core/models/subscription";
-import { nextSubscriptionToken } from "../../core/domain/token.domain";
+import { Subscription } from "../../../core/models/subscription";
+import { nextSubscriptionToken } from "../../../core/domain/token.domain";
 import { randomUUID } from "crypto";
 
 export class SubscriptionRepository {

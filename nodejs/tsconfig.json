@@ -14,16 +14,7 @@
     ],
     "target": "esnext",
     "sourceMap": true,
-    "baseUrl": ".",
-    "outDir": "dist",
-    "paths": {
-      "app-core": [
-        "./src/index"
-      ],
-    }
-  },
-  "include": [
-    "order",
-    "subscription"
-  ]
+    "baseUrl": "src",
+    "outDir": ".dist"
+  }
 }

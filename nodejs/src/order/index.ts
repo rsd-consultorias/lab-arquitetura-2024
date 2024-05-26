@@ -2,8 +2,8 @@ import { Sequelize } from "sequelize";
 import { Configuration } from "./configuration";
 import { OrderController } from "./controllers/order.controller";
 import { HttpServer } from "./infra/http-server";
-import { AccountQueueService } from "./infra/message-broker/account.queue";
-import { SubscriptionQueueService } from "./infra/message-broker/subscription.queue";
+import { AccountQueueService } from "./infra/message-broker/account-queue.service";
+import { InvoicingQueueService } from "./infra/message-broker/invoicing-queue.service";
 import { OrderRepository } from "./infra/repositories/order.repository";
 import { PayPal } from "./infra/services/paypal.service";
 
@@ -22,7 +22,7 @@ export function initServer(port: number) {
     new OrderController(
         orderRepository, 
         new AccountQueueService(),
-        new SubscriptionQueueService(),
+        new InvoicingQueueService(),
         new PayPal.v1.PayPalService(),
         httpServer);
 

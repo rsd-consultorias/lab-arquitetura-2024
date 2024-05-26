@@ -1,8 +1,8 @@
-import { IPaymentService } from "../../core/interfaces/payment-service.interface";
+import { IPaymentService } from "../../../core/interfaces/payment-service.interface";
 import { Configuration } from "../../configuration";
-import { Order } from "../../core/models/order";
-import { PaymentInfo } from "../../core/models/payment-info";
-import { PaymentPlatformReponse } from "../../core/dto/payment-platform-reponse.dto";
+import { Order } from "../../../core/models/order";
+import { PaymentInfo } from "../../../core/models/payment-info";
+import { PaymentPlatformReponse } from "../../../core/dto/payment-platform-reponse.dto";
 
 export module PayPal {
     export module v1 {
