@@ -1,4 +1,3 @@
-import { PlanStatus } from "../enums";
 import { BillingCycle } from "./billing-cycle.vo";
 
 export class Plan {
@@ -8,7 +7,7 @@ export class Plan {
         public sku: string,
         public name: string,
         public description: string,
-        public status: PlanStatus,
+        public active: boolean,
         public billingCycles: Array<BillingCycle>
     ) { }
 }

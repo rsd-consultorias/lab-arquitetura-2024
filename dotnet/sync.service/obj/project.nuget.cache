@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "XLI5N1zBt8oV1kIAUsCLNvUf1Wk/ZR21n+78F6ekG4MZ8YaHsk65N+2VWtmeCC06IpWJ0+90mY/1E1NYkxktQQ==",
+  "success": true,
+  "projectFilePath": "/Users/rafaeldias/Documents/lab-arquitetura-2024/dotnet/sync.service/sync.service.csproj",
+  "expectedPackageFiles": [
+    "/Users/rafaeldias/.nuget/packages/microsoft.aspnetcore.openapi/7.0.3/microsoft.aspnetcore.openapi.7.0.3.nupkg.sha512",
+    "/Users/rafaeldias/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/Users/rafaeldias/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/Users/rafaeldias/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "/Users/rafaeldias/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "/Users/rafaeldias/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.4.0/swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "/Users/rafaeldias/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.4.0/swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}

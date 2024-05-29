@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet", "dotnet", "{146F6FD4-2FB8-459A-9579-E7B8535F697F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sync.service", "dotnet\sync.service\sync.service.csproj", "{C74E0623-7BB7-46B2-B8E0-A5B443966670}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C74E0623-7BB7-46B2-B8E0-A5B443966670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74E0623-7BB7-46B2-B8E0-A5B443966670}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C74E0623-7BB7-46B2-B8E0-A5B443966670}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C74E0623-7BB7-46B2-B8E0-A5B443966670}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C74E0623-7BB7-46B2-B8E0-A5B443966670} = {146F6FD4-2FB8-459A-9579-E7B8535F697F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B1659F80-278B-4FB2-89E7-806BFD9F2EA9}
+	EndGlobalSection
+EndGlobal

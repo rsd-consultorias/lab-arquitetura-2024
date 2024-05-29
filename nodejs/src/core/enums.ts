@@ -1,9 +1,3 @@
-// Plan Enums
-export enum PlanStatus {
-    ACTIVE = 'ACTIVE',
-    INACTIVE = 'INACTIVE'
-}
-
 export enum FrequencyUnits {
     /** Maximum 365 days */
     DAY = 'DAY',

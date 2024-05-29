@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "2BQsHKqnbkAO3atcnA7zUY7yIBTtg2gA64TYmnPVj+E=",
+  "Source": "sync.service",
+  "BasePath": "_content/sync.service",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
