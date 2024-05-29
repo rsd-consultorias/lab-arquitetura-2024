@@ -7,7 +7,7 @@
 Exemplos:
 
 ```
-[US-001] Como **cliente**, eu quero adicionar produtos no carrinho, para comprar os produtos que quero.
+[US-001] Como cliente, eu quero adicionar produtos no carrinho, para comprar os produtos que quero.
 
 DoD: itens adicionados ao carrinho devem estar persistido durante toda a sessão de navegação do cliente.
 ---
