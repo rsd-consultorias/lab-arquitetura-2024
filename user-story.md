@@ -1,6 +1,6 @@
 # User stories e planejamento das tarefas
 
-## Template User Story
+## Template User Story<sup>(1\)</sup>
 
 **[ID]** - Como **<i>[persona]</i>**, eu **<i>[quero]</i>**, **<i>[portanto]</i>**.
 
@@ -18,7 +18,7 @@ DoD: quando o cliente clicar para ver o carrinho, todos os itens adicionados ant
 ---
 ```
 
-Ou **Gherkin Syntax**
+Ou **Gherkin Syntax<sup>(2)</sup>**
 
 Exemplos:
 
@@ -46,3 +46,9 @@ Exemplo:
   - ...
   - ...
 ```
+
+## Referências
+
+[1] [User Stories](https://www.atlassian.com/agile/project-management/user-stories)
+
+[2] [Gherkin Syntax](https://cucumber.io/docs/gherkin/reference/)
