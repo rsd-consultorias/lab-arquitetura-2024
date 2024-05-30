@@ -1,15 +1,15 @@
 export class Link {
     constructor(
-        rel: string,
-        method: string,
-        href: string
+        public rel: string,
+        public method: string,
+        public href: string
     ) { }
 }
 
 export class ApiResponse<T> {
-    status?: string;
-    body?: T;
-    links: Link[] = [];
+    public status?: string;
+    public body?: T;
+    public links: Link[] = [];
 }
 
 export class ApiCollectionResponse<T> extends ApiResponse<T> {
