@@ -7,6 +7,9 @@
 ## API First
 
 ```bash
+# Test the project
+clear && npm run test
+
 # Build the project
 clear && npm run build
 
