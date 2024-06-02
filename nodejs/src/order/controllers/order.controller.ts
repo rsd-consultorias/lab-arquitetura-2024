@@ -41,7 +41,7 @@ export class OrderController {
             async (params: ParamsDictionary) => {
                 try {
                     let token = params['token'];
-                    let order = await this.orderRepository.findByToken(token);
+                    let order = await this.orderRepository.findByTokenAndCustomerInfoId(token);
 
                     return new APIResponse<Order>(true, undefined, order);
                 } catch (error) {

@@ -31,10 +31,13 @@ var orderRepository: IOrderRepository = {
     saveCreatedOrder: async function (order: Order, platformResponse: PaymentPlatformReponse): Promise<Order> {
         return responseBody;
     },
-    findByToken: async function (token: string): Promise<Order> {
+    findByTokenAndCustomerInfoId: async function (token: string): Promise<Order> {
         return responseBody;
     },
-    finalize: async function (token: string, platformResponse: PaymentPlatformReponse): Promise<Order> {
+    findPaymentInfoById: async function (id: string): Promise<PaymentInfo> {
+        return {} as PaymentInfo;
+    },
+    finalize: async function (token: string, customerInfoId: string, platformResponse: PaymentPlatformReponse): Promise<Order> {
         return responseBody;
     }
 };

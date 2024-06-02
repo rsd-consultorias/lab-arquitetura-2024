@@ -26,4 +26,14 @@ export class OrderService {
 
         return await this.orderRepository.saveCreatedOrder(order, payment);
     }
+
+    public async finalizeOrder(order: Order) {
+        // Validations
+        if (!order.isValid()) {
+            throw new CreateOrderError(order.getErrors().reduce((x: string, y: string) => x.concat(' ').concat(y)));
+        }
+        
+        let paymentInfo = await this.orderRepository.findPaymentInfoById(order.paymentInfoId!);
+        this.paymentService.executePaymentRequest(paymentInfo);
+    }
 }

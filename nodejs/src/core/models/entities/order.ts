@@ -2,7 +2,6 @@ import { ValidateMinimalCartItems, ValidateMinimalShoppingTotal } from "../../do
 import { OrderState } from "../../enums";
 import { Address } from "../value-objects/address.vo";
 import { Entity } from "../base/base.entity";
-import { CustomerInfo } from "./customer-info";
 import { ShoppingCart } from "./shopping-cart";
 
 export class Order extends Entity {

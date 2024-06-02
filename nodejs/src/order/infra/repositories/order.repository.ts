@@ -57,7 +57,7 @@ export class OrderRepository implements IOrderRepository {
         return order;
     }
 
-    public async findByToken(token: string): Promise<Order> {
+    public async findByTokenAndCustomerInfoId(token: string): Promise<Order> {
         let order: Order;
 
         let found = await this.repository.findOne({
