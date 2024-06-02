@@ -12,6 +12,11 @@ export class OrderService {
         private orderRepository: IOrderRepository) { }
 
     public async createOrder(order: Order): Promise<Order> {
+        // Validations
+        if (!order.isValid()) {
+            throw new Error(order.getErrors().reduce((x: string, y: string) => x.concat(' ').concat(y)));
+        }
+
         order.orderState! = OrderState.PENDING;
         order.paymentInfo! = { token: nextOrderToken() } as PaymentInfo;
 

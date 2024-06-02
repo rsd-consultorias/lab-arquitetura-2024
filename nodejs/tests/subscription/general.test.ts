@@ -4,58 +4,10 @@ import { PaymentPlatformReponse } from '../../src/core/dto/payment-platform-repo
 import { Order } from '../../src/core/models/order';
 import { PaymentInfo } from '../../src/core/models/payment-info';
 import { IOrderRepository } from '../../src/core/interfaces/order.repository.interface';
+import { makeValidOrder, makeInvalidOrder } from './factories';
 
-const requestBody: Order = JSON.parse(`{
-    "buyerInfo": {
-        "firstName": "Fulano",
-        "lastName": "de Tal",
-        "birthDate": "1984-08-01",
-        "fiscalIdentificationNumber": "12345678901",
-        "email": "sb-brznd30619124@personal.example.com",
-        "phone": "12324423434535"
-    },
-    "currency": "BRL",
-    "shoppingCart": {
-        "items": [
-            {
-                "sku": "SKU1234",
-                "quantity": 1,
-                "price": 129.00,
-                "tax": 1,
-                "shipping": 0,
-                "insurance": 0,
-                "handlingFee": 0,
-                "shippingDiscount": 0,
-                "discount": 0,
-                "name": "Produto 1234",
-                "description": "Produto 1234 - XPTO - ABCD"
-            },
-            {
-                "sku": "SKU5678",
-                "quantity": 1,
-                "price": 520.00,
-                "tax": 1,
-                "shipping": 0,
-                "insurance": 0,
-                "handlingFee": 0,
-                "shippingDiscount": 0,
-                "discount": 0,
-                "name": "Produto 5678",
-                "description": "Produto 5678 - XPTO - ABCD"
-            }
-        ]
-    },
-    "shippingAddress": {
-        "postalCode": "09123456",
-        "street": "Rua de teste, 404",
-        "district": "Teste",
-        "city": "Sao Paulo",
-        "state": "Sap Paulo",
-        "countryCode": "BR"
-    }
-}`);
-
-const responseBody: Order = requestBody;
+const requestBody: Order = makeValidOrder();
+const responseBody: Order = makeValidOrder();
 
 var orderService: OrderService;
 var paymentService: IPaymentService = {
