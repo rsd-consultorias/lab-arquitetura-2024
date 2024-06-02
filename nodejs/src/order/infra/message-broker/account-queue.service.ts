@@ -1,7 +1,7 @@
-import { BuyerInfo } from "../../../core/models/entities/buyer-info";
+import { CustomerInfo } from "../../../core/models/entities/customer-info";
 
 export class AccountQueueService {
-    public async sendbuyerInfoToAccountVerification(buyerInfo: BuyerInfo): Promise<any> {
+    public async sendbuyerInfoToAccountVerification(buyerInfo: CustomerInfo): Promise<any> {
 
     }
 }

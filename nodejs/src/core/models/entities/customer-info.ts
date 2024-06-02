@@ -1,6 +1,6 @@
 import { Entity } from "../base/base.entity";
 
-export class BuyerInfo extends Entity {
+export class CustomerInfo extends Entity {
     constructor(
         public firstName: string,
         public lastName: string,
