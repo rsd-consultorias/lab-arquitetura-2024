@@ -1,7 +1,14 @@
-export  class BaseModel {
+import { randomUUID } from "crypto";
 
+export abstract class Entity {
+
+    public readonly id: string | undefined;
     private rules: Function[] = [];
     private errors: string[] = [];
+
+    constructor() {
+        this.id = randomUUID();
+    }
 
     protected addValidation(rule: Function) {
         this.rules.push(rule);

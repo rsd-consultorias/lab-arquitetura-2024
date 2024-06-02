@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { PaymentPlatformReponse } from "../../../core/dto/payment-platform-reponse.dto";
 import { IOrderRepository } from "../../../core/interfaces/order.repository.interface";
-import { Order } from "../../../core/models/order";
+import { Order } from "../../../core/models/entities/order";
 import { DataTypes, Model, ModelStatic, Sequelize } from "sequelize";
 import { OrderState } from "../../../core/enums";
 

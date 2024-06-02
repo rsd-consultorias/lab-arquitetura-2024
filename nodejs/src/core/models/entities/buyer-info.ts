@@ -1,4 +1,6 @@
-export class BuyerInfo {
+import { Entity } from "../base/base.entity";
+
+export class BuyerInfo extends Entity {
     constructor(
         public firstName: string,
         public lastName: string,
@@ -7,5 +9,7 @@ export class BuyerInfo {
         public token?: string,
         public email?: string,
         public phone?: string
-    ) { }
+    ) { 
+        super();
+    }
 }

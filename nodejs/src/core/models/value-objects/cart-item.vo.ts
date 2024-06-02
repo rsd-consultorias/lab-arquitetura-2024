@@ -1,5 +1,7 @@
+import { ValueObject } from "../base/base.value-object";
+
 /** Value object */
-export class CartItem {
+export class CartItem extends ValueObject {
     constructor(
         public sku: string,
         public quantity: number,
@@ -12,5 +14,7 @@ export class CartItem {
         public discount?: number,
         public name?: string,
         public description?: string
-    ) { }
+    ) { 
+        super();
+    }
 }

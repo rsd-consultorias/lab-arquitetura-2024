@@ -1,10 +1,11 @@
 import { IPaymentService } from '../../src/core/interfaces/payment-service.interface';
 import { OrderService } from '../../src/core';
 import { PaymentPlatformReponse } from '../../src/core/dto/payment-platform-reponse.dto';
-import { Order } from '../../src/core/models/order';
-import { PaymentInfo } from '../../src/core/models/payment-info';
+import { Order } from '../../src/core/models/entities/order';
+import { PaymentInfo } from '../../src/core/models/entities/payment-info';
 import { IOrderRepository } from '../../src/core/interfaces/order.repository.interface';
 import { makeValidOrder, makeInvalidOrder } from './factories';
+import { randomUUID } from 'crypto';
 
 const requestBody: Order = makeValidOrder();
 const responseBody: Order = makeValidOrder();
@@ -12,7 +13,15 @@ const responseBody: Order = makeValidOrder();
 var orderService: OrderService;
 var paymentService: IPaymentService = {
     createPaymentRequest: async function (order: Order): Promise<PaymentPlatformReponse> {
-        return {};
+        let paymentResponse = new PaymentPlatformReponse();
+        paymentResponse.paymentInfo = new PaymentInfo();
+        paymentResponse.paymentInfo.platformPaymentId = randomUUID();
+        paymentResponse.paymentInfo.platormPayerId = randomUUID();
+        paymentResponse.paymentInfo.platformToken = randomUUID();
+        paymentResponse.paymentInfo.paymentPlatform = 'PAYPAL';
+        paymentResponse.order = order;
+
+        return paymentResponse;
     },
     executePaymentRequest: async function (paymentInfo: PaymentInfo): Promise<PaymentPlatformReponse> {
         return {};

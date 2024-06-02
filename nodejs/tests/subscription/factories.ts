@@ -1,39 +1,15 @@
-import { Order } from '../../src/core/models/order';
-import { randomUUID } from "crypto";
+import { Order } from '../../src/core/models/entities/order';
+import { ShoppingCart } from '../../src/core/models/entities/shopping-cart';
+import { CartItem } from '../../src/core/models/value-objects/cart-item.vo';
+import { BuyerInfo } from '../../src/core/models/entities/buyer-info';
 
 export function makeValidOrder() {
+    let item1 = new CartItem('SKU1234', 1, 56.00, 1, 0, 0, 0, 0, 0, 'Produto 1234', 'Produto 1234 - XPTO - ABCD');
+    let item2 = new CartItem('SKU1235', 1, 56.00, 1, 0, 0, 0, 0, 0, 'Produto 1234', 'Produto 1234 - XPTO - ABCD');
+    let shoppingCart = new ShoppingCart([item1, item2]);
+
     let order = new Order(
-        {
-            id: randomUUID(),
-            items: [
-                {
-                    sku: 'SKU1234',
-                    quantity: 1,
-                    price: 56.00,
-                    tax: 1,
-                    shipping: 0,
-                    insurance: 0,
-                    handlingFee: 0,
-                    shippingDiscount: 0,
-                    discount: 0,
-                    name: 'Produto 1234',
-                    description: 'Produto 1234 - XPTO - ABCD'
-                },
-                {
-                    sku: 'SKU5678',
-                    quantity: 1,
-                    price: 56.00,
-                    tax: 1,
-                    shipping: 0,
-                    insurance: 0,
-                    handlingFee: 0,
-                    shippingDiscount: 0,
-                    discount: 0,
-                    name: 'Produto 5678',
-                    description: 'Produto 5678 - XPTO - ABCD'
-                }
-            ]
-        },
+        shoppingCart,
         {
             postalCode: '09123456',
             street: 'Rua de teste, 404',
@@ -49,56 +25,28 @@ export function makeValidOrder() {
             city: 'Sao Paulo',
             state: 'Sap Paulo',
             countryCode: 'BR'
-        },
-        {}
+        }
     );
 
     order.currency = 'BRL';
-    order.buyerInfo = {
-        firstName: 'Fulano',
-        lastName: 'de Tal',
-        birthDate: new Date('1984-08-01'),
-        fiscalIdentificationNumber: '12345678901',
-        email: 'sb-brznd30619124@personal.example.com',
-        phone: '12324423434535'
-    }
+    order.buyerInfo = new BuyerInfo(
+        'Fulano', 'de Tal',
+        new Date('1984-08-01'),
+        '12345678901',
+        'sb-brznd30619124@personal.example.com',
+        '12324423434535');
+
 
     return order;
 }
 
 export function makeInvalidOrder() {
+    let item1 = new CartItem('SKU1234', 1, 5.00, 1, 0, 0, 0, 0, 0, 'Produto 1234', 'Produto 1234 - XPTO - ABCD');
+    let item2 = new CartItem('SKU1235', 1, 6.00, 1, 0, 0, 0, 0, 0, 'Produto 1234', 'Produto 1234 - XPTO - ABCD');
+    let shoppingCart = new ShoppingCart([item1]);
+
     let order = new Order(
-        {
-            id: randomUUID(),
-            items: [
-                {
-                    sku: 'SKU1234',
-                    quantity: 1,
-                    price: 1.00,
-                    tax: 1,
-                    shipping: 0,
-                    insurance: 0,
-                    handlingFee: 0,
-                    shippingDiscount: 0,
-                    discount: 0,
-                    name: 'Produto 1234',
-                    description: 'Produto 1234 - XPTO - ABCD'
-                },
-                {
-                    sku: 'SKU5678',
-                    quantity: 1,
-                    price: 5.00,
-                    tax: 1,
-                    shipping: 0,
-                    insurance: 0,
-                    handlingFee: 0,
-                    shippingDiscount: 0,
-                    discount: 0,
-                    name: 'Produto 5678',
-                    description: 'Produto 5678 - XPTO - ABCD'
-                }
-            ]
-        },
+        shoppingCart,
         {
             postalCode: '09123456',
             street: 'Rua de teste, 404',
@@ -114,19 +62,16 @@ export function makeInvalidOrder() {
             city: 'Sao Paulo',
             state: 'Sap Paulo',
             countryCode: 'BR'
-        },
-        {}
+        }
     );
 
     order.currency = 'BRL';
-    order.buyerInfo = {
-        firstName: 'Fulano',
-        lastName: 'de Tal',
-        birthDate: new Date('1984-08-01'),
-        fiscalIdentificationNumber: '12345678901',
-        email: 'sb-brznd30619124@personal.example.com',
-        phone: '12324423434535'
-    }
+    order.buyerInfo = new BuyerInfo(
+        'Fulano', 'de Tal',
+        new Date('1984-08-01'),
+        '12345678901',
+        'sb-brznd30619124@personal.example.com',
+        '12324423434535');
 
     return order;
 }

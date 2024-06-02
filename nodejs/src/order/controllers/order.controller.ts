@@ -1,7 +1,7 @@
 import { ParamsDictionary } from "express-serve-static-core";
-import { Order } from "../../core/models/order";
+import { Order } from "../../core/models/entities/order";
 import { IPaymentService } from "../../core/interfaces/payment-service.interface";
-import { PaymentInfo } from "../../core/models/payment-info";
+import { PaymentInfo } from "../../core/models/entities/payment-info";
 import { IHttpServer } from "../infra/http-server";
 import { APIResponse } from "../view-models/api-response";
 import { AccountQueueService } from "../infra/message-broker/account-queue.service";

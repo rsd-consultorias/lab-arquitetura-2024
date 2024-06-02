@@ -1,5 +1,5 @@
 import { PaymentPlatformReponse } from "../dto/payment-platform-reponse.dto";
-import { Order } from "../models/order";
+import { Order } from "../models/entities/order";
 
 export interface IOrderRepository {
     saveCreatedOrder(order: Order, platformResponse: PaymentPlatformReponse): Promise<Order>;

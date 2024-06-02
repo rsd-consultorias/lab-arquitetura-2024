@@ -1,5 +1,7 @@
+import { ValueObject } from "../base/base.value-object";
+
 /** Value object */
-export class Address {
+export class Address extends ValueObject {
     constructor(
         public postalCode: string,
         public street: string,
@@ -8,5 +10,7 @@ export class Address {
         public state: string,
         public countryCode: string,
         public complement?: string
-    ) { }
+    ) { 
+        super();
+    }
 }

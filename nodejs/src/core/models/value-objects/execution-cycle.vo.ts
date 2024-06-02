@@ -1,18 +1,6 @@
-import { FrequencyUnits, TenureTypes } from "../enums";
-
-/** Value object */
-export class BillingCycle {
-
-    constructor(
-        public frequencyUnit: FrequencyUnits,
-        public frequencyCount: number,
-        public tenureType: TenureTypes,
-        public sequence: number,
-        public totalCycles: number,
-        public price: number,
-        public currency: string
-    ) { }
-}
+import { FrequencyUnits, TenureTypes } from "../../enums";
+import { ValueObject } from "../base/base.value-object";
+import { BillingCycle } from "./billing-cycle.vo";
 
 /** Value object */
 export class ExecutionCycle extends BillingCycle {

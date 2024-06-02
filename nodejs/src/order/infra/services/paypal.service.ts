@@ -1,7 +1,7 @@
 import { IPaymentService } from "../../../core/interfaces/payment-service.interface";
 import { Configuration } from "../../configuration";
-import { Order } from "../../../core/models/order";
-import { PaymentInfo } from "../../../core/models/payment-info";
+import { Order } from "../../../core/models/entities/order";
+import { PaymentInfo } from "../../../core/models/entities/payment-info";
 import { PaymentPlatformReponse } from "../../../core/dto/payment-platform-reponse.dto";
 
 export module PayPal {

@@ -1,4 +1,6 @@
-export class PaymentInfo {
+import { Entity } from "../base/base.entity";
+
+export class PaymentInfo extends Entity {
 
     /** Transaction token */
     public token?: string;

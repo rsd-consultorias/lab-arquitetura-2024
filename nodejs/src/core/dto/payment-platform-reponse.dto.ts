@@ -1,5 +1,5 @@
-import { Order } from "../models/order";
-import { PaymentInfo } from "../models/payment-info";
+import { Order } from "../models/entities/order";
+import { PaymentInfo } from "../models/entities/payment-info";
 
 /** DTO */
 export class PaymentPlatformReponse {
